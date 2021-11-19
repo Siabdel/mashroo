@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang='fr'>
+<head>
+	<meta charset="UTF-8">
+  <link href="static/css/bootstrap.css" rel="stylesheet" id="bootstrap-css">
+	<link href="static/css/popup.css" rel="stylesheet"  >
+  <link href="static/css/Chart.min.css" rel="stylesheet"  >
+	<!-- CSS -->
+  <script src="static/js/jquery.js"></script>
+  <script src="static/js/bootstrap.js"></script>
+	<script src="static/js/jquery.popup.js"></script>
+  <script src="static/js/Chart.js"></script>
+
+</head>
+
+<BODY class="container-fluid">
+  <!--  include jumbotron_ -->
+
+  <div class="jumbotron">
+      <h2 class="text-center"> Admin OF </h2>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                </div>
+
+                <div class="panel-footer">
+                    <div class="row">
+											<canvas id="myChart" width="200" height="40"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+	<script>
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var myChart = new Chart(ctx, {
+	    type: 'bar',
+	    data: {
+	        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+	        datasets: [{
+	            label: '# of Votes',
+	            data: [12, 19, 73, 5, 2, 3],
+
+
+	            backgroundColor: [
+	                'red',
+	                '#33F',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 159, 64, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255, 99, 132, 1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 159, 64, 1)'
+	            ],
+	            borderWidth: 1
+	        }]
+	    },
+	    options: {
+	        scales: {
+	            yAxes: [{
+	                ticks: {
+	                    beginAtZero: true
+	                }
+	            }]
+	        }
+	    }
+	});
+	</script>
+
+</body>
+</html>

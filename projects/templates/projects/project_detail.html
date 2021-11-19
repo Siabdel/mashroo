@@ -1,0 +1,305 @@
+{% extends 'base_detail.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+	{% block right_side__ %}
+  <div class="row">
+ 	 <ul class="list-group">
+ 		 <li class="list-group-item text-info"> <a  @click.prevent="show_create=!show_create"  class="btn btn-primary btn-lg btn-block" href="#"> Add Tache</a></li>
+ 		 <li class="list-group-item text-info"> <a  @click.prevent="show_create=!show_create"  class="btn btn-primary btn-lg btn-block" href="#"> Assigné à</a></li>
+ 		 <li class="list-group-item text-info"> <a  @click.prevent="show_create=!show_create"  class="btn btn-primary btn-lg btn-block" href="#"> piece jointe</a></li>
+ 	 </ul>
+  </div>
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid" id="app" v-cloak>
+    <HR>
+    <div class="card bg-warning text-white col-lg-12">
+      <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+				<A href="{% url 'project_add' %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Creer</A>
+				{% if object.status != 'CLOSED' %}
+					<A href="{% url 'project_edit' object.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Modifier</A>
+				{% endif %}
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+      </div>
+    </div>
+
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row">
+
+          <div class="card bg-secondary text-white">
+              <div class="card-heading  bg-info">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item active"><a class="nav-link text-white" href="#tab1primary" data-toggle="tab">Project |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab2taches" data-toggle="tab">Tâches |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab3_members" data-toggle="tab">Membres |</a></li>
+													<li class="nav-item"><a class="nav-link text-white" href="#tab4documents" data-toggle="tab">Documents</a></li>
+													<li class="nav-item"><a class="nav-link text-white" href="#tab5images" data-toggle="tab">Images</a></li>
+													<li class="nav-item"><a class="nav-link text-white" href="#tab6videos" data-toggle="tab">My youtube</a></li>
+													<li class="nav-item">
+														<a class="nav-link text-white" href="{% url 'project_chart_gantt' project_id  %}"  >
+															<em class="fa fa fa-bar-chart fa-lg"> </em> Vue diagramme Gantt</a>
+													</li>
+                          <li class="nav-item">
+														<a class="nav-link text-white" href="{% url 'print_chart_3d'  project_id  %}"  >
+															<em class="fa fa fa-bar-chart fa-lg"> </em> Chart 3Digramme</a>
+													</li>
+													<li class="nav-item"><a class="nav-link text-white" href="{% url 'print_piechart_3d' project_id  %}">
+															<em class="fa fa fa-bar-chart fa-lg"> </em> Graphique camanbert mes tickets</a>
+													</li>
+
+													<li class="nav-item"><a class="nav-link text-white" href="{% url 'project_timeline_calendar' %}">
+															<em class="fa fa fa-bar-calendar fa-lg"> </em> Vue Calendrier</a>
+													</li>
+
+
+                      </ul>
+              </div>
+          </div>
+          <!-- Panel multi anglaits -->
+          <div class="panel-body">
+            <div class="tab-content">
+							<!-- detail project -->
+							<div class="tab-pane active text-bold col-lg-12" id="tab1primary">
+
+								<div class="col-lg-6">
+									{% include 'elements/carosel_slides.html' %}
+									<!---
+									{%  if object.documents.all.0 %}
+									<img src="/static/media/{{ object.documents.all.0}}"    width="250"  height="250"/></p>
+									{% else %}
+									<img src="/static/images/The_Project_Title_Card.jpg"   width="250"  height="250"/></p>
+									{%  endif %}
+
+									--->
+								</div>
+
+								<div class="col-lg-6">
+									<div class="col-lg-8">
+										<ul class="list-unstyled">
+											<li><h3 class="titre text-info"> {{ object.title }}    </h3> </li>
+											<li>
+											<hr>
+											<span>Code : </span>  <span class="badge badge-secondary"> {{ object.code }} </span>
+											<br><hr>
+											</li>
+											<li> <span>Description : </span>
+											<p > <br>   {{ object.description | linebreaks  }}  </p>
+											</li>
+											<label class="data-value"> {{ form.tags }} </label>
+										</ul>
+									</div>
+
+									<div class="col-lg-4">
+										<ul class="list-unstyled">
+											<li>
+											<hr>
+												<span>Crée le : </span> <span class="">{{ object.created |date:"D d M Y" }}  {{ object.created |time:"H:i" }}  </span>
+											</li>
+											<li>
+											<span class="">Status : </span>	<span class="label-primary badge badge-yellow" > {{ object.status }} </span>
+											</li>
+											<li> <span class="">Auteur : {{ object.author}} </span> </li>
+											<li> <span class="">Manager : </span> <span class=""> {{ object.manager}} </span></li>
+											<li> <span class="">Date d'echéchance  :</span> <span class=""> {{ object.due_date|date:"D d M Y" }}  {{ object.due_date |time:"H:i" }}  </span>
+
+											<li> <span class="">Partenaires client  :</span> <span class="">   </span>
+														{% for client in object.partenaire.all %}
+														<ul>
+															<li> <span class="">Partenaires client  :</span> <span class=""> {{ client.tiers_name }}  </span>
+														</ul>
+
+											 			{% endfor %}
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+
+							<!-- Ajout action -->
+              <div class="tab-pane" id="tab2taches">
+								 <legend>Suivi du projet :  </legend>
+								 <div class="row list-group-item">
+									 <label for="title" class="col-sm-2 control-label">Projet</label>
+									 <label for="code">Code : </label><label class="data-value text-info text-bold"> {{ project.code}}  </label>
+									 <label class="col-sm-4 data-value text-info text-bold"> {{ project.title}}  </label>
+								 </div>
+								 <div class="row">
+										   {% include "elements/components/ticket_component.html" %}
+								 </div>
+              </div>
+
+              <div class="tab-pane fade" id="tab3_members">
+								<legend>Members ***</legend>
+								 <table class="table table-striped" ><legend class="text-muted"> liste des membres associés au projet : {{ object.code }}</legend>
+									 <thead class="thead thead">
+									 <th>Identifiant</th> <th>Nom</th>  <th>Fonction </th> <th>Service</th> <th>Email</th>
+									 </thead>
+									 {% for member in object.participants.all %}
+											 <tr>
+													<td>
+														{% if member.photo %}
+															 <img class="img-circle" src="/static/media/{{ member.photo }} " width="60" height="60" alt="{{ member.photo }}">
+														 {% else %}
+															 <img src="/static/images/avatar_default.png" width="60" height="60" alt="{{ member.photo }}">
+														 {% endif %}
+													 </td>
+													<td>   {{ member.user.first_name }} {{ member.user.last_name }} </td>
+													<td>   {{ member.fonction.name }} </td>
+													<td>   {{ member.service.name }} </td>
+													<td>   {{ member.user.email }}   </td>
+											 </tr>
+										 {% endfor %}
+								 </table>
+              </div>
+
+              <div class="tab-pane fade" id="tab4documents">
+								<ul class="list-group">
+									{% for elem in object.documents.all %}
+											{% if elem.document.file_type in "'pdf', 'doc', 'xlsm', 'xls', 'docx'" %}
+												<li class="list-group-item" >
+													<a href="/static/media/{{ elem.document }}"> {{ elem.document }} </a>
+												</li>
+											{% endif %}
+									{% endfor %}
+								</ul>
+							</div>
+
+							<div class="tab-pane fade" id="tab5images">
+								<ul class="list-group">
+									{% for photo in object.get_images_project %}
+											{% if photo.document.file_type  in "png, jpg, jpeg" %}
+											<li class="list-group-item" >
+											 	<p> **
+													<a href="/static/media/{{ photo.document }}">	<img src="/static/media/{{photo}}" heigth="40" width="200" alt="{{ photo }}"></a>
+													{% if photo.document.do_title %}
+													<ul class="unstyled-list">
+ 													 <li>{{ photo.document.do_title }}</li>
+ 													 <li>{{ photo.document.do_description }}</li>
+ 												 </ul>
+												 {% endif %}
+												 </p>
+											{% elif forloop.last == True %}
+											<a href="/static/media/{{ photo.document }}">	<img src="/static/media/{{photo}}" heigth="40" width="200" alt="{{ photo }}"></a>
+											{% endif %}
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+							<div class="tab-pane fade" id="tab6videos">
+								<ul class="list-group">
+									{% for elem in object.documents.all %}
+											{% if elem.document.file_type == 'mp4' %}
+												<div class="row">
+													<li class="list-group-item" >
+														<div class="col-md-4">
+															<video controls width="250" height="100">
+																	<source src="/static/media/{{elem}}" type="video/mp4">
+															</video>
+														</div>
+
+														<div class="col-md-8">
+															<h3> {{ elem.document.title }}</h3>
+																<ul>
+																		<li> <small>{{ elem.document.do_title }}</small></li>
+																		<li>
+																			<p>
+																			 {{ elem.document.do_description }}
+																			</p>
+																		</li>
+																</ul>
+															<hr>
+
+														</div>
+
+													</li>
+										 		</div>
+											{% endif %}
+									{% endfor %}
+								</ul>
+							</div>
+
+            </div>
+          </div>
+			</div>
+</div><!-- fin container -->
+
+
+<!-- ------------------------------------------------------------ ------------------->
+<!-- ----------------------------------  MODAL ------------------------------------->
+<!-- ------------------------------------------------------------ ------------------->
+<div id="condirm_maj" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous enregistrer les modifications apportées au document avant la fermeture?</p>
+                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+                <button type="button" id="save_02" class="btn btn-primary">Sauvegarder les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- popup commantaires-->
+<div id="id_modal_transmission" class="modal fade modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Messages of</h4>
+            </div>
+            <div class="modal-body">
+                <p><dtml-var liste_transmissions></p>
+                <p class="text-warning"><small>Messages of des utilisateurs.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- popup edit commantaire  -->
+<div id="id_modal_edit_transmission" class="modal fade modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body">
+                <p><dtml-var edit_transmission></p>
+                <p class="text-warning"><small>edition Message  des utilisateurs.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main_side %}

@@ -1,0 +1,30 @@
+{
+  "name": "sliker",
+  "version": "2.1.2",
+  "description": "jquery gallery plugin",
+  "main": "sliker.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zenike/sliker.git"
+  },
+  "keywords": [
+    "jquery",
+    "javascript",
+    "js",
+    "gallery",
+    "slideshow",
+    "sliker"
+  ],
+  "author": "Zenike <nicolasmaquet@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zenike/sliker/issues"
+  },
+  "homepage": "https://github.com/Zenike/sliker#readme"
+}

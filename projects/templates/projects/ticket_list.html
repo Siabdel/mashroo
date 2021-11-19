@@ -1,0 +1,36 @@
+{% extends 'base_ticket.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block main_side %}
+  <!-- Ajout action -->
+  <div class="container-fluid row" id="app">
+     <div class="col-md-10" v-show="show_list" >
+       <legend>Liste de mes taches:<span class="badge badge-secondary" >   </span></legend>
+       <div class="card bg-warning text-white col-lg-12">
+         <div class="card-heading">
+           <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+             <A href='#'   onclick="history.go(-1);"      class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+             <A href='#'   onclick="history.back();"      class="btn btn-success"><em class="fa fa-close"></em>Retour</button></A>
+             <A href='#'   onclick="location.reload();"  class="btn btn-success"><em class="fa fa-refresh"></em>Refresh</button></A>
+
+                <a class="btn btn-default" href="{% url 'project_chart_gantt' 78  %}"  >
+                  <em class="fa fa fa-bar-chart fa-lg"> </em> Vue diagramme Gantt</a>
+                <a class="btn btn-default" href="{% url 'print_chart_3d'  78  %}"  >
+                  <em class="fa fa fa-bar-chart fa-lg"> </em> Chart 3Digramme</a>
+                <a class="btn btn-default" href="{% url 'print_piechart_3d' 78  %}">
+                  <em class="fa fa fa-bar-chart fa-lg"> </em> Graphique camanbert mes tickets</a>
+
+                <a class="btn btn-default" href="{% url 'project_timeline_calendar' %}">
+                  <em class="fa fa fa-bar-calendar fa-lg"> </em> Vue Calendrier</a>
+
+         </div>
+       </div>
+       <!-- component -->
+       <div class="row">
+         <!-- composant  pour tickets du 78 -->
+         <componentickets  :current_user_id=`{{ user.pk }}` > </componentickets>
+       </div>
+     </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base_projects.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+{% load notification_tags  %}
+{% include_notify_js_variables %}
+
+
+  {% block template_vuejs %}
+  {% endblock %}
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock %}
+
+	{% block right_side %} {% endblock right_side %}
+
+	<HR>
+
+{% block jumbotron__center %}
+
+{% endblock %}
+
+{% block main_side %}
+  <div class="container">
+    <!-- NOTIFICATIONS  -->
+    <footer>
+      <div class="well undefined"   >
+        <ul class="notifications list-group" >
+            {% user_notifications %}
+        </ul>`
+      </div>
+
+    </footer>
+  </div>
+{% endblock %}

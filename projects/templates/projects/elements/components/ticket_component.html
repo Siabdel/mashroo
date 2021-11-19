@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <!-- * form post etape*  -->
+  <div class="row hidden">
+      <!-- use the modal component, pass in the prop -->
+      <modal v-if="showModal" @close="showModal = false">
+        <h3 slot="header">Confirmation </h3>
+      </modal>
+  </div>
+
+  <hr>
+  <div  v-show="show_list" class="row">
+  <legend>Liste des étapes :<span class="badge badge-secondary" >   </span></legend>
+  <div class="card bg-warning text-white col-lg-12">
+    <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+        <A href="{% url 'ticket_add' object.pk  %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Creer</A>
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+        <A href='#'   onclick="location.reload();"  class="btn btn-success"><em class="fa fa-refresh"></em>Refresh</button></A>
+    </div>
+  </div>
+  </div>
+
+  <!-- component -->
+  <div class="row">
+    <compo_task_admin  :current_user_id="{{user.id}}" :project_id="{{ object.pk }}"></compo_actions>
+  </div>
+</div>

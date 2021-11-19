@@ -1,0 +1,323 @@
+<dtml-var standard_html_header_02>
+<dtml-comment> charger les variables transmis </dtml-comment>
+<dtml-call "REQUEST.set('user', _['AUTHENTICATED_USER'] )" >
+
+<dtml-try>
+    <dtml-call  "REQUEST['HTTP_REFERER'].index('gestion_ordre_fabrication')"  >
+
+
+    <dtml-call "REQUEST.SESSION.set('retour', REQUEST['HTTP_REFERER']  )" >
+
+<dtml-except ValueError>
+     <dtml-call "REQUEST.set('erreur',  'type=%s  err= %s   ' % (error_type, error_value )) " >
+     <dtml-comment> <dtml-return   erreur >  </dtml-comment>
+
+</dtml-try>
+
+<div class="container-fluid">
+   
+    <HR>
+    <div class="card bg-secondary text-white col-md-12">
+      <div class="card-heading">
+        <dtml-if "statut == 'P'" >
+          <button class="btn btn-default btn-lg">Of Planifié</button>
+
+        <dtml-elif "statut == 'L'" >
+          <button class="btn btn-default btn-lg">En cours</button>
+          <A  href="#" data-target="#confirm_cloture"  data-href="cloture_of?code_of=<dtml-var code_of>"
+            data-toggle="modal" class="btn btn-success btn-xs" > <em class="fa fa-close"></em>Cloturer</A>
+
+        <dtml-elif "statut == 'C'" >
+
+          <A  href="#" data-target="#confirm_start"  data-href="planification_of?code_of=<dtml-var code_of>&quantite_prevue=<dtml-var quantite_prevue>"
+          data-toggle="modal" class="btn btn-success btn-xs" > <em class="fa fa-play"></em>Planifier OF</A>
+
+
+
+          <A  href="#" data-target="#confirm_cloture"  data-href="cloture_of?code_of=<dtml-var code_of>"
+            data-toggle="modal" class="btn btn-success btn-xs" > <em class="fa fa-close"></em>Clore</A>
+
+          <dtml-elif "statut == 'S'" >
+          <button class="btn btn-default btn-lg">cloturé</button>
+      </dtml-if>
+
+      <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" > <button type='button' class="btn btn-success"  title="impression of indirecte" ><em class="fa fa-print"></em>imprimer</button></A>
+      <A href='#'  id="save_01" class="btn btn-success"><em class="fa fa-save"></em>Sauvegarder</button></A>
+      <A href='<dtml-var "REQUEST.SESSION['retour']" >'   class="btn btn-success"  title="impression of" ><em class="fa fa-close"></em>Annuler</button></A>
+      </div>
+    </div>
+
+    </dtml-in>
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card bg-secondary text-white">
+              <div class="card-heading">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item active"><a class="nav-link text-white" href="#tab1primary" data-toggle="tab">ordre production |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab2primary" data-toggle="tab">produits à consommer |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab3primary" data-toggle="tab">produits finis |</a></li>
+                          <li class="nav-item"><a class="nav-link disabled text-white" href="#tab4primary" data-toggle="tab">rebuts</a></li>
+                      </ul>
+              </div>
+          </div>
+          <!-- lancer le simulateur -->
+          <div class="panel-body">
+            <div class="tab-content">
+
+              <div class="tab-pane active" id="tab1primary">
+                  <dtml-in sql_get_of  >
+                      <dtml-call "REQUEST.set('no_commande', commande_client)" >
+                      <dtml-var form_of >
+                  </dtml-in>
+              </div>
+
+              <div class="tab-pane" id="tab2primary">
+                <dtml-if "quantite" >
+                  <dtml-var sformule_calcul2>
+                </dtml-if>
+              </div>
+
+              <div class="tab-pane fade" id="tab3primary">
+                  <dtml-var liste_produits_finis>
+              </div>
+
+              <div class="tab-pane fade" id="tab4primary"># </div>
+
+            </div>
+          </div>
+  </div>
+</diV>
+
+</div><!-- fin container -->
+<!-- ------------------------------------------------------------ ------------------->
+<!-- ----------------------------------  MODAL ------------------------------------->
+<!-- ------------------------------------------------------------ ------------------->
+<div id="condirm_maj" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous enregistrer les modifications apportées au document avant la fermeture?</p>
+                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+                <button type="button" id="save_02" class="btn btn-primary">Sauvegarder les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- cloturé of -->
+<!----- Modal popup confirmation -->
+<div class="modal fade" id="confirm_cloture" tabindex="-1" role="dialog" aria-labelledby="cloture " aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez la cloture de cet OF ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- lancement_of of -->
+<div class="modal fade" id="confirm_start" tabindex="-1" role="dialog" aria-labelledby="start " aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez la planification de cet OF ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- lancement_of of -->
+<div class="modal fade" id="confirm_DA" tabindex="-1" role="dialog" aria-labelledby="cloture " aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez cette demande d'approvisionnment ?
+                <p id="id_br_wait" class="text-warning" style="display:none"><img src="barre_progress" width="150px">  </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a id="id_ok_wait" class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- popup produit a consommer -->
+<div id="id_modal_pac" class="modal fade modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Produit à consommer</h4>
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+            <div class="modal-body">
+                <p><dtml-var sformule_calcul2></p>
+                <p class="text-warning"><small>Produit à consommer.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- popup commantaires-->
+<div id="id_modal_transmission" class="modal fade modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Messages of</h4>
+            </div>
+            <div class="modal-body">
+                <p><dtml-var liste_transmissions></p>
+                <p class="text-warning"><small>Messages of des utilisateurs.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- popup edit commantaire  -->
+<div id="id_modal_edit_transmission" class="modal fade modal-lg">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Message</h4>
+            </div>
+            <div class="modal-body">
+                <p><dtml-var edit_transmission></p>
+                <p class="text-warning"><small>edition Message  des utilisateurs.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+    // fenetre modal Confirmation
+    // hide nb_of_sem
+    $("#id_nb_of").hide();
+    // Si of est soldé ou lancer on fige l'edition of
+
+    if($("#id_statut").val() == 'S' || $("#id_statut").val() == 'L'){
+      $("input").attr( "READONLY", true);
+      $("input[type='submit']").prop( "DISABLED", true);
+    }
+
+    // url pour lancer la simulation produits à conommer
+    $("id_produit_consommer").click( function(){
+      //$("simulateur_01").click();
+    })
+
+    // si la valeur du realisee change on recalcul le restant
+    var qte_restante = parseFloat($("#quantite_prevue").val()) - parseFloat($("#quantite_realisee").val()) ;
+    var taux = (parseFloat($("#quantite_realisee").val()) / parseFloat($("#quantite_prevue").val())) * 100
+    $("#quantite_restante").val(qte_restante);
+    //$("#qte").isPlainObject('object');
+    // si la valeur du realisee change on recalcul le restant
+    $("#quantite_realisee").change(function(e){
+      var qte_restante = parseFloat($("#quantite_prevue").val()) - parseFloat($("#quantite_realisee").val()) ;
+      //alert(qte_restante);
+      $("#quantite_restante").val(qte_restante);
+      // change bar progress
+      //$('div.progress-bar').text(taux);
+
+    });
+
+    // controler l'enregistrement
+    $("#save_01").click(function(event){
+      //alert("on enregistre !!");
+      $("#condirm_maj").modal('show');
+      event.preventDefault();
+
+    });
+
+    $("#save_02").click(function(event){
+     $("#form_01").attr('action', 'modifier_of');
+      $( "#form_01" ).submit();
+      //alert("on enregistre !!");
+      $("#quit_02").click();
+      //window.history.go(-1)
+      //event.preventDefault();
+    });
+
+  // confirmer la cloture d'of
+  // afficher popup avec barre progress wait
+  $('#confirm_DA').on('show.bs.modal', function(e) {
+      // on affiche barre progress si ok est saisir
+      $("#id_ok_wait").click(function(event){
+        $("#id_br_wait").show();
+      });
+
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+  });
+
+  // afficher popup sans barre progress wait
+  $('#confirm_cloture, #confirm_start').on('show.bs.modal', function(e) {
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+  });
+  // confirmer le lancemet d'of
+  // afficher popup
+  $("#id_lancement").click(function(event){
+    $("#id_modal_start").modal('show');
+    event.preventDefault();
+  });
+
+  // confirmer la lancement d'of
+  $("#save_04").click(function(event){
+    //modifer la routine de action form
+    $("#form_01").attr('action', 'lancement_of');
+    // submiter l'of
+    $("#form_01" ).submit();
+    //alert("on cloture !!");
+    $("#quit_04").click();
+  });
+
+});// fin document ready
+
+
+</script>
+
+
+<dtml-var standard_html_footer>

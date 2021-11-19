@@ -1,0 +1,33 @@
+<!-- businessce/societes_list.html -->
+{% comment %} {% extends 'base_bisuness.html' %} {% endcomment %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block jumbotron_header %}
+ {% endblock  %}
+
+
+ {% block left_side %}
+ {% endblock %}
+
+ {% block right_side %}
+ {% endblock %}
+
+
+{% block main_side %}
+<br><br>
+<hr>
+  <ul>
+    {% for societe in societes %}
+        <li>{{ societe.name }}</li>
+        {% if societe.children.exists %}
+           {% with societe.children.all as societes %}
+           <li>
+             {% include "businessce/societes_list.html" %}
+           </li>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+  </ul>
+
+ {% endblock  %}

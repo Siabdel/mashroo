@@ -1,0 +1,41 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!------CSS------>
+    <link rel='stylesheet' href="{% static 'bootstrap/dist-3.3.5/css/bootstrap_as.css' %}"  media="screen" />
+    <link rel='stylesheet' href="{% static 'jquery/css/jquery-ui.css' %}"  >
+
+    <!------ JS ---------->
+    <script src="{%  static 'jquery/js/jquery-v3.3.1.min.js' %}" ></script>
+    <script src="{% static 	'bootstrap/dist-3.3.5/js/bootstrap.js' %}"></script>
+
+  </head>
+  <body>
+    <h3>{{ subject }}</h3>
+    <div class="row">
+      <p>
+        <br>
+         <a href="{{url_task}}" > Un ticket vous est assigné comme action a faire.  <strong>  suivre ce lien... </strong>  </a>
+
+        <ul class="list-unstyled">
+          <li> Task n° {{ object.id }} </li>
+          <li> Object {{ object.title }} </li>
+          <li> Description {{ object.description }} </li>
+          <li> Status  : {{ object.project.status }} </li>
+          <li> Project code :  {{ object.project.code}} </li>
+          <li> Project : {{ object.project.title }} </li>
+        </ul>
+
+      </p>
+
+
+    <hr>
+    <p>
+      {{ message }}
+    </p>
+    </div>
+  </body>
+</html>

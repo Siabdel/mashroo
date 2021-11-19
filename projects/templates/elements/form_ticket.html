@@ -1,0 +1,40 @@
+<form class="" @submit="checkTicketForm" method="post" id="form_task">
+  <p v-if="errors.length">
+     <b>Please correct the following error(s):</b>
+     <ul>
+       <li v-for="error in errors">[[ error ]]  </li>
+     </ul>
+   </p>
+
+  {% csrf_token %}
+  <div class="col-lg-2">
+    {{ form.title.errors }}
+    <span class="col-sm-6 input-group-addon"> <i class="fa fa-search"></i></span>
+    <input type="text" name="title" v-model="ticket.title" @keyup.enter.prevent=""  class="input-lg" size="6" >
+    <span>Responsable: </span>
+    <input type="hidden" name="author" v-model="ticket.author" >
+  </div>
+
+   <div class="col-lg-8">
+      <div class="form-group">
+        <span>Project :</span> <span>[[ ticket.project ]] </span>
+        <span>Sequence :</span><span>[[ ticket.sequence ]] </span>
+        <hr>
+        <input type="hidden" name="project"     v-model="ticket.project"  >
+        <input type="hidden" name="sequence"    v-model="ticket.sequence"  >
+        <input type="hidden" name="author"      v-model="ticket.author" >
+        <input type="hidden" name="categories"  v-model="ticket.categories" >
+      </div>
+
+      <div class="form-group">
+        <input type="hidden" name="sequence"  v-model="ticket.sequence" readonly>
+        <span>Titre :</span>
+        <textarea class="input-lg" name="description"  v-model="ticket.description" rows="3" cols="60"></textarea>
+      </div>
+
+   </div>
+
+    <div class="col-lg-2">
+     <button type="button" class="btn btn-warning btn-lg" @click.prevent="add_etape_project(event, project_id)">Add</button>
+   </div>
+</form>

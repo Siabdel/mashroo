@@ -1,0 +1,29 @@
+<aside class="">
+  <div class="panel panel-default">
+    <div class="panel-heading">  <img src="/static/images/logo/logo_strand_3D_001.png" width="100%" height="50"/></div>
+    <div class="panel-body ">
+      <ul class="list-group">
+        <li class="list-group-item text-info"> <h4>   <i class="fa fa-dashboard"></i> <a href="{% url 'project_home' %}" > Dashboard </a></h4></li>
+
+        {% if user.pk  %}
+          <li class="list-group-item text-info"> <h4> <em class="fa fa-tasks fa-lg"> </em><a href="{% url 'mes_ticket_list' user.pk %}" > Mes taches </a></h4></li>
+        {% endif %}
+
+        <li class="list-group-item text-info"> <h4> <em class="fa fa-tasks fa-lg"> </em> <a href="{% url 'project_list' %}" > Liste de projets </a></h4></li>
+        <li class="list-group-item text-info"> <h4> <em class="fa fa-tasks fa-lg"> </em> <a href="{% url 'todo_today' %}" > Todo </a></h4></li>
+
+        <li class="list-group-item text-info"> <h4> <em class="fa fa-inbox fa-lg"> </em> <a href="{% url 'notification_url' %}" > Boîte de réception </a></h4></li>
+
+        {% if user.pk  %}
+          <li class="list-group-item text-info"> <h4> <em class="fa fa-cogs fa-lg"></em> <a href="{% url 'profile_user' user.pk %}" > Paramètres</a></h4> </li>
+        {% endif %}
+
+        {% if project_id  %}
+          <li class="list-group-item text-info"> <h4> <em class="fa fa-calendar fa-lg"> </em> <a href="{% url 'project_timeline_calendar' %}"> Vue Calendrier </a></h4></li>
+        {% endif %}
+
+      </ul>
+
+    </div>
+  </div>
+</aside>

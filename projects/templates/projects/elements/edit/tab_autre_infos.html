@@ -1,0 +1,69 @@
+{% load l10n %}
+<div class="row container well">
+  <ul class="list-group">
+
+    <li class="list-group-item">
+      <label for="title" class="col-sm-2 control-label">Visibilité</label>
+      <label class="data-value text-info text-bold"> {{ form.visibilite }}  </label>
+    </li>
+
+
+    <li id="id_maj_client" class="list-group-item"  style="display:none" > <label for="title" class="col-sm-2 control-label">Partenaire</label>
+      <label class="data-value text-info text-bold"> {{ form.clients }} </label>
+    </li>
+
+    <li>
+      <div class="row">
+          <div class="col-md-6">
+            <label class="">Partenaires client  :</label> <span class="">
+                  {% for client in object.partenaire.all %}
+                  <ul class="list-group">
+                    <li class="list-group-item">   <span class="text-info"> {{ client.tiers_name }}  </span>
+                  </ul>
+
+                  {% endfor %}
+            </span>
+          </div>
+
+          <div class="col-md-6">
+            <label class="data-value col-xs-offset-1" > <button type="button" class="btn btn-info" onclick="$('#id_maj_client').toggle(1000);" >Modifier Client</button> </label>
+          </div>
+      </div>
+      <br>
+    </li>
+
+
+    <li class="list-group-item"> <label for="title" class="col-sm-offset-1 control-label">Commentaires </label>
+      <label class="data-value"> <button type="button" class="btn btn-info" onclick="$('#id_comment_01').toggle(1000);" >Ajoutez des commentaires</button> </label>
+    </li>
+
+    <li id="id_comment_01" class="list-group-item" style="display:none">
+      {{ form.description.errors }}
+      <label for="description" class="col-md-12 control-label">Comentaires</label>
+      <p class="data-value"> {{ form.comment}}   </p>
+    </li>
+
+  </ul>
+</div>
+
+<script type="text/javascript">
+
+ $(document).ready(function() {
+
+  $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] ); // texte en french
+ // date start
+  $('#id_date_debut__').datepicker({
+    weekHeader: 'Sm',
+    showWeekDays : 'true',
+    dateFormat: 'yy-mm-dd',
+    altField: "#datepicker",
+    closeText: 'Fermer',
+    firstDay: 1 ,
+  });
+  //var due_date= $('#id_due_date').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+  //$('#id_date_debut').datepicker({ dateFormat: 'dd-mm-yy' }).val(date_deb);
+  //$( "#id_date_debut" ).datepicker( "option", "dateFormat", 'yy-mm-dd' );
+
+});
+
+</script>

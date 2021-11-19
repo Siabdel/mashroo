@@ -1,0 +1,29 @@
+{% extends  'base_blog.html'  %}
+{% load  staticfiles   %}
+{% load markdownify %}
+{% load markdown_filter %}
+ {% load markdownas %}
+
+
+{%  block main  %}
+<hr>
+<br>
+<br>
+
+<div class="container bg" >
+
+
+    <p> {{ object.content |  markdownas | safe  }} </p>
+<hr>
+
+  <p> {{ object.content | markdownify|safe   }} </p>
+
+<hr>
+
+  <p>
+  {{  object.content | markdown_filter|safe }}
+  </p>
+
+
+</div>
+{% endblock %}

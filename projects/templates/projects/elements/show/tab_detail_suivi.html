@@ -1,0 +1,33 @@
+<label for="comment" class="col-sm-2 control-label">Commentaires </label>
+<hr>
+{% for comment in object.comments.all %}
+  <ul class="list-group">
+    <li class="list-group-item text-info text-bold">
+      <p>
+        <img  class="img-circle"  src="/static/images/avatar_default.png" width="60" height="60">
+
+        <span class="{% if comment.current_status == 'REFUSEE'%}
+                          badge badge-grey block
+                      {% elif comment.current_status == 'ENCOURS' %}
+                          badge badge-orange block
+                      {% elif comment.current_status == 'RESOLUE' %}
+                          badge badge-apple block
+                      {% elif comment.current_status == 'ENATTENTE' %}
+                          badge badge-apple block
+                      {% else %}
+                          badge badge-apple block
+                      {% endif %} " >
+
+              {{ comment.current_status }}
+          </span>
+        <span class="text-warning col-sm-1"> {{  comment.created | date:"D j F Y H:i" }}</span>
+      </p>
+      <p>
+        <span class="text-warning col-sm-1">	{{  comment.user_assignee  }}: ** </span>
+      </p>
+      <p>
+        <span class="text-warning col-sm-1"> {{  comment.description|linebreaks }}</span>
+      </p>
+     </li>
+  </ul>
+{% endfor %}

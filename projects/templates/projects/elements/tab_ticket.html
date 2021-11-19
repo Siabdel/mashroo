@@ -1,0 +1,61 @@
+<div class="row container well">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <label for="title" class="control-label">Reference </label>
+      <label class="badge badge-secondary push-left"> <h4> {{ object.id  }} </h4> </label>
+    </li>
+
+    <li class="list-group-item"> <label for="title" class="col-sm-1 control-label">Titre  </label>
+      {{ form.title.errors }}
+      <label class="data-value"> {{ form.title}} </label>
+      <label class="data-value"> <button type="button" class="btn btn-info" onclick="$('#id_desc_01').toggle(1000);" >Déscription</button> </label>
+
+      <ul>
+
+          <li class="list-group-item"> <label for="form.due_date" class="col-sm-2 control-label">Date planifiée  </label>
+            <a href="#" onclick="$('#calendar1').toggle(1000);"><em class="fa fa-calendar fa-lg"></em> <label for="">{{ object.schedule_date  }}</label>  </a>
+            <label id='calendar1' class="data-value text-info text-bold" style='display:none;'> {{ form.schedule_date}}
+          </li>
+
+
+            <li class="list-group-item"> <label for="form.due_date" class="col-sm-2 control-label">Date Echèanche  </label>
+              <a href="#" onclick="$('#calendar2').toggle(1000);"><em class="fa fa-calendar fa-lg"></em> <label for="">{{ object.due_date  }}</label>  </a>
+              <label id='calendar2' class="data-value text-info text-bold" style='display:none;'> {{ form.due_date}}
+            </li>
+      </ul>
+    </li>
+
+    <li>
+      <label class="data-value"> {{ form.project}} </label>
+      <label class="data-value"> {{ form.author}} </label>
+      <label class="data-value"> {{ form.sequence}}  </label>
+    </li>
+
+    <li id="id_desc_01" class="list-group-item" style="display:none">
+      {{ form.description.errors }}
+      <label for="description" class="col-md-12 control-label">Description </label>
+      <p class="data-value"> {{ form.description }}   </p>
+    </li>
+
+    <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Assignée à</label>
+      <label class="data-value text-info text-bold"> {{ form.assignee }} </label>
+    </li>
+
+    <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Categorie</label>
+      <label class="data-value text-info text-bold "> {{ form.category }} </label>
+    </li>
+  </ul>
+</div>
+
+{% if not object %}
+  <script type="text/javascript">
+    $( document ).ready(function(){
+      // si titre chagne
+      $('#id_title').change(function(){
+        var titre = $('#id_title').val();
+        $('#id_description').val(titre);
+      })
+
+    })
+  </script>
+{% endif %}

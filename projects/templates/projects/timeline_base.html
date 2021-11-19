@@ -1,0 +1,30 @@
+{% extends 'base_projects.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock %}
+
+	{% block right_side %}
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+
+
+<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 50px auto;
+	}
+
+</style>

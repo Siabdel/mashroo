@@ -1,0 +1,51 @@
+<div class="container" id="app_contacte" >
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h2 v-show="!isSaved" class="section-heading">[[ titre ]] </h2>
+            <h3 class="section-subheading text-muted"> .</h3>
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-lg-12">
+            <form name="sentMessage" id="contactForm" novalidate>
+                <div v-show="showForm" class="row" > <h2> {{ user }}  </h2>
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input v-model="contacte.nom" type="text" class="form-control" placeholder="Votre Nom *" id="name" required data-validation-required-message="Merci de rentrer votre nom.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <input v-model="contacte.email" type="email" class="form-control" placeholder="Votre Email *" id="email" required data-validation-required-message="Merci de rentrer votre addresse email .">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <textarea v-model="contacte.message" class="form-control" placeholder="Votre Message *" id="message" required data-validation-required-message="Merci de rentrer votre message."></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="col-lg-12 text-center">
+                        <div v-show="error" id="success" class="bg-info text-warning" >[[ error ]]</div>
+                        <button @click.prevent = "create_ticket" type="submit" class="btn btn-xl">Envoyez le Message</button>
+                    </div>
+                </div>
+                <div v-show="!showForm" class="col-lg-12 text-center">
+                    <div v-show="message" id="success" class="bg-success text-warning" > <h3>[[ message ]] </h3>
+                      <img class="img" src="static/images/clin_oeil_anime.jpeg" alt="" width="100" height="50"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  var username = "{{ user.first_name  }} {{user.last_name }}";
+  var email = "{{user.email }}";
+</script>

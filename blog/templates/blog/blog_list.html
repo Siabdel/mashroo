@@ -1,0 +1,55 @@
+{% extends  'base_blog.html'  %}
+{% load  staticfiles   %}
+{% load markdownify %}
+{% load markdown_filter %}
+ {% load markdownas %}
+
+
+{%  block main  %}
+<hr>
+<br>
+<br>
+
+<div class="row">
+    <header class="breadcrumb">
+      <div class="overlay"></div>
+      <div class="container">
+          <div class="row">
+              <div class=" col-md-8 col-md-10 mx-auto">
+                  <div class="site-heading">
+                      <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to my awesome Blog </h3>
+                      <p class="text-light">We Love Django As much as you do..! &nbsp
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </header>
+</div>
+<hr>
+<div class="container bg" >
+  <table class="table table-striped">
+  <thead>
+    <th>creer</th> <th>modifier</th> <th>titre</th> <th>active</th> <th colspan="3"> Action</th>
+  </thead>
+  {% for article in object_list  %}
+  <tr>
+    <td> {{ article.id }}</td>
+    <td> {{ article.created }}</td>
+    <td> {{ article.modified }}</td>
+    <td> {{article.title}}</td>
+    <td> {{ article.active }}</td>
+    <td> <a href="{% url 'article_details' article.pk %}"> Show </a></td>
+    <td> <a href="{% url 'article_edit' article.pk %}"> Edit</a></td>
+    <td> <a href="{% url 'article_delete' article.pk %}"> Supprimer </a></td>
+
+  </tr>
+
+  {% endfor %}
+</table>
+
+<hr>
+<p> <a class="btn btn-success btn-lg" href="{% url 'add_article' %}"> Ajouter un article </a></p>
+<hr>
+</div>
+{% endblock %}

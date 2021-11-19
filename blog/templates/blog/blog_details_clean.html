@@ -1,0 +1,65 @@
+{% extends  'base_blog.html'  %}
+{% load  staticfiles   %}
+{% load markdownify %}
+{% load markdown_filter %}
+ {% load markdownas %}
+
+
+{%  block main  %}
+<hr>
+<br>
+<div class="well">
+  <h3> <a href="{% url 'blog_admin' %}"> Accueil  </a></h3>
+</div>
+
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>  {{ article.title }}</h1>
+            <span class="meta">Posté par
+              <a href="#">{{ user.username}} {{ user.firstname}}</a>
+              le {{ article.created | date:'d M Y' }}</p>
+          </div>
+        </div>
+
+        <div class="col-lg-2">
+
+          <p>  <img src="/media/{{ article.category.photo.document }}" alt="photo {{ article.category }}"  width="400px"> </p>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h3 class="section-heading">{{ article.recap }}</h3>
+            {{object.content |  markdownas | safe   }}
+
+
+          <a href="#">
+            <img class="img-fluid" src="{{ article.documents.get_documents_article }}" alt="">
+          </a>
+
+          <span class="caption text-muted">
+            <blockquote class="blockquote">  ...</blockquote>
+
+          <p>Placeholder text by
+            <a href="http://localhost/"> Copyright@Atlasoft.fr </a>. Photographs by
+            <a href="https://www.atlasoft.fr/">Atlasoft web agence</a>.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+{% endblock %}

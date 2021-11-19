@@ -1,0 +1,25 @@
+.my-btn-xl{
+  background-image:url('/static/images/logo/logo_strand_200x50.png');
+  //background-image:url('/static/images/logo/logo_50x200_002.png');
+  background-repeat: no-repeat;
+  color:#fff;
+  //background-color:#fed136;
+  border-color:#fed136;
+  font-family:Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  text-transform:uppercase;
+  font-weight:700;
+  border-radius:3px;font-size:18px;
+  padding:20px 40px;
+
+}
+
+
+.entete_sce_004 {
+   background-image:url("/static/images/cosmetic_009.png" );
+   background-repeat:no-repeat;
+   padding-top: 50px;
+   padding-left: 50px;
+   border: 2px
+   solid black;
+  }
+ 

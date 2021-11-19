@@ -1,0 +1,87 @@
+{% extends 'base_projects.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+
+	{% block extra_js %}
+		<!-- VUEJS  -->
+		<script src="{% static 'vuejs/vue.min.js' %}"></script>
+		<script src="{% static 'vuejs/components/EasyGantt.js' %}"></script>
+		<script  	 src="{% static 'vuejs/gantt/app.js' %}"></script>
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid" id="app" >
+  <HR>
+		<div class="demo"> <legend> Demo </legend>
+	    <easy_gantt  :sdate="sdate" :utasks="utasks" ref="easyGantt"></easy_gantt>
+	  </div>
+</div><!-- fin container -->
+
+
+<template id="id_tmplate_gantt">
+  <div class="at-eg">
+		<h2> ICI composant Gantt ..</h2>
+    <div class="at-eg-hd">
+      <table class="table" >
+        <thead>
+          <tr>
+            <th class="at-eg-cell-first">
+              <div v-show="isLoading" class="at-eg-spinner">
+                <slot name="spinner">
+                  <i :class="'at-eg-spinner-' + spinner"></i>
+                </slot>
+              </div>
+              <div v-show="!isLoading" class="at-eg-cell-first-inner">#</div>
+            </th>
+
+
+						<th>  [[ utasks.length ]] </th>
+            <th v-for="(elem, index ) in utasks " :key="index">
+              [[  elem.start | formatDate ]]
+            </th>
+
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="at-eg-bd">
+      <table class="at-eg-tb at-eg-tasks">
+        <tbody>
+          <template v-for="(obj, idx) in egtasks">
+            <user-tasks :user="obj.user" :tasks="obj.tasks" :dates="dates" :cls="idx % 2 === 0 ? 'at-eg-odd' : ''"></user-tasks>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+
+
+{% endblock %}
+
+
+  <!-- Add "scoped" attribute to limit CSS to this component only --
+	<style lang="stylus" src="../styles/style.styl"></style>>
+  <style>
+    .demo {
+      margin-bottom : 50px;
+      margin-left :auto;
+      margin-right: auto;
+      max-width : 1440px;
+      padding:2em 1em;
+      overflow : auto;
+		}
+  </style>

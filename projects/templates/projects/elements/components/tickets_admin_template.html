@@ -1,0 +1,205 @@
+<!-- template for the modal component -->
+<template  id="tickets_admin_template">
+    <div class="container-fluid">
+      <!-- formulaire commentaire -->
+      <div class="well"> <h2 ref="titre2" >le composant ticket</h2>
+        <div v-show="showComment" class="">
+          <fieldset>
+            <legend> Commentaires Suivi</legend>
+            <form class="form-horizontal" action="index.html" method="post">
+              <div class="form-group control-group error">
+                <label class="control-label">Message</label>
+                <div class="controls">
+                  <textarea class="form-control md-textarea input-large" v-model="currentComment" rows="10" cols="60" ref="zcomment" required></textarea>
+                  <input type="hidden" v-model="currentTask"  >
+                  <input type="hidden" v-model="currentTaskId"  >
+
+                </div>
+                <div class="form-actions col-md-2">
+                  <Button v-show="currentTask.status === 'ENCOURS'" class="btn btn-success btn-lg btn-block" @click.prevent="ajouter_comment">Ajouter un commentaire </button>
+                  <Button v-show="currentTask.status === 'RESOLUE'" class="btn btn-lg btn-block" @click.prevent="terminer_tache">Enregistrer la réalisation </button>
+                  <Button v-show="currentTask.status === 'REFUSEE'" class="btn btn-success  btn-lg btn-block" @click.prevent="annuler_tache">Notifier le refus </button>
+                  <Button  class="btn  btn-warning btn-lg btn-block" @click.prevent="showComment=!showComment">Annulez </button>
+                </div>
+                <p class="help-block">Veuillez saisir un commentaire pour le suivi</p>
+                </div>
+
+              </form>
+        </fieldset>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <span class="col-md-5"><input class="form-control" type="text" v-model.lazy="cle"
+                @change.prevent="api_filter_tickets(cle)" value="ok" placeholder="Rechercher une tache ...">
+
+          </span>  <button type="button" class="btn btn-warning" @input="api_filter_tickets(cle)" >Ok</button>
+          <button v-show="(currentUser.user && currentUser.user.is_superuser )" type="button" class="btn btn-warning"  v-on:click.prevent="api_filter_tickets('all')" >All</button>
+      </div>
+
+      <table class="table table-striped" >
+        <thead class="thead thead-inverse"> <small class="text-muted"> </small>
+
+        <th>Select</th>
+        <th>code projet</th>
+        <th>status</th>
+        <th><a @click="sortBy='id'"> Identifiant</a> </th>
+        <th>categorie</th>
+
+        <th v-show="false"><a @click="sortBy='id'"> Sequence</a> </th>
+
+        <th><a @click="sortBy='title'"> titre</a> </th>
+        <th><a @click="sortBy='author'"> Auteur </a> </th>
+        <th><a @click="sortBy='assignee'"> Assigné à </a> </th>
+        <th>date planifiée</th>
+        <th>date écheance</th>
+        <th>date debut réalisation</th>
+        <th>date fin réalisation</th>
+        <th>date cloture</th>
+        <th>delais planifie</th>
+        <th>delais due date</th>
+        <th>temps realisation </th>
+
+        <th>urgence</th>
+        <th class="text-center" colspan="3">Actions</th>
+
+        </thead>
+            <tr v-show="visibility" class="text-center" v-for="(task, index) in sortedTickets2"  :key="index" :currentTaskId="task.id">
+              <td>
+                <input type="checkbox"  v-bind:checked="checked" v-on:change="selectTicket( $event.target.checked, task.id, key)" class="form-check-input" />
+              </td>
+              <td v-if="task.project">
+                <a href="#" v-bind:title='task.project.title' > [[ task.project.code  ]]  </a>
+              </td>
+
+              <td v-bind:class="{
+                  'badge badge-yellow    block'  : task.status === 'NOUVEAU' ,
+                  'badge badge-grey      block'  : task.status === 'REFUSEE',
+
+                  'badge badge-warning   block'  : task.status === 'ENCOURS',
+                  'badge badge-info      block'  : task.status === 'ENATTENTE',
+
+                  'badge badge-success   block'  : task.status === 'CLOTUREE',
+                  'badge badge-apple     block'  : task.status === 'RESOLUE' }" >  [[ task.status]] </td>
+
+              <td> [[ task.id  ]] </td>
+              <td v-if="task.category"> [[ task.category.title  ]] </td>
+              <td v-else> ---</td>
+
+              <td v-show="false"> [[ task.sequence ]] </td>
+
+              <td class="text-left"> [[ task.title | substr(100) ]] </td>
+
+              <td v-if="task.author" > [[ task.author]] </td>
+              <td v-if="task.assignee"> [[ task.assignee.first_name ]] [[ task.assignee.last_name ]]</td>
+              <td v-else> ---</td>
+
+              <td v-if="task.created"> [[ task.schedule_date | formatDate ]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="task.due_date"> [[ task.due_date | formatDate ]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="task.start_date" > [[ task.start_date  | formatDate ]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="task.end_date" > [[ task.end_date  | formatDate ]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="task.closed" > [[ task.closed  | formatDate ]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="task.delai_planifie" v-bind:class="{ 'text-danger'  : task.delai_planifie > 0 , 'text-success' : task.delai_planifie < 0}" >
+                [[ task.delai_planifie * -1]] jours</td>
+              <td v-else> ---</td>
+
+              <td v-if="task.due_date" v-bind:class="{ 'text-danger'  : task.delai_due_date > 0 , 'text-success' : task.delai_due_date < 0}" >
+                [[ task.nbjours_ouvrable_due_date ]] jours</td>
+
+              <td v-else> ---</td>
+
+              <td v-if="task.delai_realisation"  > [[ task.delai_realisation ]] jours</td>
+              <td v-else>---</td>
+
+              <td v-bind:class="{
+                'badge badge-yellow block' : task.urgency === 'FAIBLE',   // Jaune
+                'badge badge-warning block' : task.urgency === 'MOYEN',    // Orange
+                'badge badge-success block' : task.urgency === 'CRITIQUE', // Vert
+                'badge badge-danger block'  : task.urgency === 'URGENT' ,  // Rouge
+                 }" > [[ task.urgency]]
+              </td>
+
+              <td> <A  :href="url_ticket_edit(task.id)" data-toggle="tooltip"  title="Voir Détails" class="btn btn-md btn-info" >
+                <em class="fa fa-eye"></em> </A>
+              </td>
+
+
+
+              <td>
+                <div class="row">
+                  <div class="col-md-1">
+                    <div class="card with-nav-tabs panel-primary">
+                      <div class="card-heading">
+                        <ul class="nav nav-tabs">
+                          <!-- Action groupées -->
+                          <!-- Dropdown -->
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Plus ...</a>
+                            <ul class="dropdown-menu">
+                              <li class="nav-item disabled"><a  class="nav-link text-muted  disabled"  disabled href="#" data-toggle="tab">----</a></li>
+
+
+
+                              <li v-if="task.status == 'ENCOURS'">
+                                <A @click.prevent="task.status = 'ENCOURS', currentTask=task, showComment=!showComment,  setFocusComment()" href="#" data-toggle="tooltip"
+                                  title="Ajouter un Commentaire" class="btn btn-md btn-warning btn-block" >
+                                  <em class="fa fa-plus fa-xm"></em>
+                                </A>
+                              </li>
+                              <li v-else>---</li>
+
+                              <li>
+                                <A v-show="user_permissions_task(task)"   data-toggle="tooltip"
+                                  @click.prevent="api_delete_tache(this, task)" title="Suppression de l'action"
+                                    v-bind:class="{
+                                      'btn btn-md btn-warning' : (currentUser.user && currentUser.user.is_superuser ),
+                                      'btn btn-md btn-warning btn-block' : (currentUser && currentUser.user.is_staff)}" >
+                                     <em  class="fa fa-trash"></em> </A>
+                              </li>
+
+                              <li v-show="user_permissions_task(task)"  >
+                                <A  :href="url_ticket_show(task.id) "  data-toggle="tooltip"  title="Modifier Ticket" class="btn btn-md btn-warning" >
+                                  <em class="fa fa-pencil"></em></A>
+                              </li>
+
+                              <li v-show="(user_permissions_task(task)) && (['REFUSEE','RESOLUE', 'ENCOURS'].includes(task.status))" class="nav-item"> <a class="badge badge-success  text-primary" @click.prevent=" task.status = 'CLOTUREE', currentTask=task, cloturer_tache(e)">Cloturer</a></li>
+                              <li v-show="(is_currentuser_assignee(task)) && (task.status === 'NOUVEAU')" class="nav-item"><a class="nav-link  text-primary" href="#" @click.prevent="task.status = 'ENCOURS', currentTask=task, accepter_tache(event)"> Acceptez</a></li>
+
+                              <li v-show="(is_currentuser_assignee(task)) && (task.status === 'NOUVEAU')" class="nav-item"><a class="nav-link  text-primary" href="#" @click.prevent="showComment=!showComment, currentTask=task, task.status='REFUSEE'"> Refusez</a></li>
+
+                              <li v-show="(is_currentuser_assignee(task)) && (task.status === 'ENCOURS')" class="nav-item  btn btn-success btn-block"><a class="nav-link  text-primary" href="#" @click.prevent="task.status = 'RESOLUE', currentTask=task, showComment=!showComment">Terminer</a></li>
+                              <li v-show="(user_permissions_task(task)) && (task.status === 'REFUSEE')" class="nav-item"><a class="nav-link  btn btn-warning btn-block" href="#" @click.prevent="task.status = 'RESOLUE', currentTaskId=task, showComment=!showComment">Réouvrir</a></li>
+
+                              <li v-show="(is_currentuser_assignee(task)) && (task.status === 'ENATTENTE')" class="nav-item"><a class="nav-link  btn btn-warning btn-block" href="#" @click.prevent="task.status = 'ENCOURS', currentTask=task, accepter_tache(event)"> Relance</a></li>
+                              <li v-show="(is_currentuser_assignee(task)) && (task.status === 'ENCOURS')" class="nav-item"><a class="nav-link  btn btn-info btn-block" href="#" @click.prevent="task.status = 'ENATTENTE', currentTask=task, mise_pause_tache(event)">Pause</a></li>
+
+
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+            </tr>
+      </table>
+
+      <div v-show="donnees.length > 4" class="row"  >
+        <button class='btn-warning' @click.prevent="prevPage">Précedent</button>
+        <button class='btn-warning' @click.prevent="nextPage">Suivant</button>
+      </div>
+    </div>
+
+</template>

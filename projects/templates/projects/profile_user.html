@@ -1,0 +1,115 @@
+{% extends 'base_detail.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+{% load notification_tags  %}
+{% include_notify_js_variables %}
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+
+	{% block right_side %}
+  <div class="row"> </div>
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid" id="app">
+    <HR>
+    <div class="card bg-warning text-white col-md-12">
+      <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+				<A href="{% url 'profile_user_edit' object.user.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Modifier</A>
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+      </div>
+    </div>
+
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card bg-secondary text-white">
+              <div class="card-heading  text-white" style="background-color:'#CCE'">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item active"><a class="nav-link text-white" href="#tab1primary" data-toggle="tab">Profile|</a></li>
+                      <li class="nav-item"><a class="nav-link text-white" href="#tab2taches" data-toggle="tab">Notifications|</a></li>
+                      <li class="nav-item"><a class="nav-link disabled text-white" href="#tab4documents" data-toggle="tab">Documents</a></li>
+                  </ul>
+              </div>
+          </div>
+          <!-- Panel multi anglaits -->
+          <div class="panel-body">
+            <div class="tab-content">
+							<!-- detail project -->
+              <div class="tab-pane active text-bold col-lg-12" id="tab1primary">
+
+									<div class="col-lg-4">
+										{% if object.photo %}
+											<img class="img-circle" src="/static/media/{{ object.photo }}"    width="250"  height="250"/></p>
+										{% else %}
+											<img class="img-circle" src="/static/images/avatar_default.png"   width="250"  height="250"/></p>
+										{% endif %}
+									</div>
+
+									<div class="col-lg-8">
+
+										<div class="col-lg-6">
+											<ul class="list-unstyled">
+												<li> <span>Login : </span>  <span class="badge badge-secondary col-md-offset-3 text-info">  {{ object.user.username   }} </span>    </li>
+												<li> <span>Crée le : </span> <span class="col-md-offset-3">
+													{{ object.user.date_joined |date:"D d M Y" }}  {{ object.user.created |time:"H:i" }}  </span> </li>
+												<li> <span>Email: </span>  <span class="col-md-offset-3 text-info"> {{ object.user.email }}    </span> </li>
+												{% if object.language == 'fr' %}
+												<li> <span>Language :</span>  <span class="col-md-offset-3 text-info"> frensh </span> </li>
+
+												<li> <span> Fuseau horaire: </span> <span class="col-md-offset-2 text-info"> 	{{ object.timezone }} </span>  </li><br>
+												{% else %}
+												<li> <span>Language : </span>  <span class="col-md-offset-3 text-info"> {{ object.language }}    </span> </li>
+												{% endif %}
+											</ul>
+										</div>
+
+										<div class="col-lg-6">
+											<ul class="list-unstyled">
+												<li> <span>Société : </span>  <span class="col-md-offset-3 text-info">{{ object.service.societe }} </span>    </li>
+												<li> <span>Fonction : </span>  <span class="col-md-offset-3 text-info">{{ object.fonction.name }} </span>    </li>
+												<li> <span>Service  : </span>	<span class="col-md-offset-3 text-info">{{ object.service.name}}  </span> </li>
+												<li> <span>Role			: </span> 			<span class="col-md-offset-3 text-info">{{ object.role }}  </span> </li>
+											</ul>
+										</div>
+									</div>
+				      </div>
+
+							<!-- Ajout action -->
+              <div class="tab-pane" id="tab2taches">
+								 <legend> Notifications </legend>
+								 		{% comment %}
+								 		 	{% render_notifications using request.user.notifications.active %}
+								 			{% render_notifications using request.user.notifications.active for box %}
+
+										{%  endcomment %}
+ 										{% user_notifications for box %}
+              </div>
+
+              <div class="tab-pane fade" id="tab3members">
+              </div>
+
+              <div class="tab-pane fade" id="tab4documents">
+							</div>
+
+            </div>
+          </div>
+  </div>
+</div>
+
+</div><!-- fin container -->
+
+{% endblock main_side %}
+
+{% block extra_js %}
+	<!-- VUEJS  -->
+	<script src="{% static 'vuejs/vue.min.js' %}"></script>
+	<!-- VUEJS  -->
+{% endblock %}

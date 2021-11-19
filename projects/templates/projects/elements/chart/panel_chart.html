@@ -1,0 +1,58 @@
+{% load static %}
+	{% block extra_js %}
+		<!-- VUEJS  -->
+		<script type="text/javascript">
+			var jsonData  = [];
+			var it_works = false;
+			// go ...
+			$(document).ready(function() {
+					// load data
+					var api_url = `/pro/api/get_project_ticket_stat/{{target}}/`;
+					// loadDataChart
+					loadDataChart(api_url);
+					console.log("panel_chart api   jsonData= " +  jsonData.nouveau);
+					// chart
+					data_in = [
+							jsonData.nouveau,
+							jsonData.enattente,
+							jsonData.encours,
+							jsonData.resolue,
+							jsonData.cloturee,
+							jsonData.annulee,
+					];
+					// print chart
+					id_target = "canvas_" + `{{ target }}`
+					printChart(id_target,	data_in);
+					//
+				});// document.ready
+		</script>
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid">
+  <!--  include jumbotron --->
+  <div class="row">
+      <h5 class="text-center"> Chart Projects Histogramme des mes tickets {{ target }}</h5>
+  </div>
+
+	<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                </div>
+
+                <div class="panel-footer">
+                    <div class="row">
+
+											<canvas id="canvas_{{ target }}"  width="200" height="40"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+</div> <!-- fin container -->
+{% endblock %}

@@ -1,0 +1,52 @@
+
+<style>
+h1 {
+  text-align:center;
+}
+
+body {
+      //font-family: Verdana, Helvetica, sans-serif;
+      font-family: Times, Times New Roman, serif;
+      font-size:12px;
+      }
+
+
+table {
+  overflow:hidden;
+  width:1200px;
+  padding: 0px;
+  marigin: 0px;
+}
+
+
+table tr {
+  //width:1200px;
+  font-size: 9px;
+  padding: 20px;
+}
+
+table tr td{
+  //width:7px;
+  color:blue;
+}
+
+p, table {
+      color: #2A223A;
+      font-family: Georgia, "Times New Roman", serif;
+  }
+
+
+ol li, ul li {
+  color: #1111FF;
+  text-style:bold;
+  background-color:#FFFFF;
+  border-color:#f6bf01;
+  font-size: 13px;
+  line-height:1.77;
+}
+
+.pagebreak
+{
+	page-break-after: always;
+}
+</style>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang='fr'>
+
+{% load static staticfiles %}
+
+{% load i18n %}
+
+{% load breadcrumbs %}
+
+<head>
+   
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="branding">
+                <h1 id="site-name">Pulsar</h1>
+                <h2 id="site-tagline">Free your business</h2>
+            </div>
+
+            <div id="nav">
+                <div id="search">{% include "elements/search.html" %}</div>
+                {% comment %}
+                <!-- <div id="bookmarks">{% include "elements/bookmarks.html" %}</div> -->
+                <!-- <div id="userarea">{% include "auth/userarea.html" %}</div> -->
+                {% endcomment %}
+            </div>
+
+            <div id="breadcrumbs"><span class="list">{% block breadcrumbs %}{% add_crumb 'Home' %}{% endblock %}{% render_breadcrumbs %}</span></div>
+        </div>
+
+        <hr/>
+
+        <div id="content">
+            <div id="sidebar">
+             region "sidebar"
+            </div>
+
+            <div id="main">
+                {% block messages %}
+					{% if messages %}
+					<div class="messages">
+						<ul>
+							{% for message in messages %}
+							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+					{% endif %}
+                {% endblock %}
+
+                {% block title %}{% endblock %}
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+
+        <hr/>
+
+        <div id="footer">
+         region "footer"
+        </div>
+    </div>
+</body>
+
+</html>

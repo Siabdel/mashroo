@@ -1,0 +1,71 @@
+{% extends 'base_businessce.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+
+	{% block extra_js %}
+		<!-- VUEJS  -->
+		<link href="{% static 'chart/css/Chart.min.css' %}" rel="stylesheet"  >
+		<script src="{% static 'chart/js/Chart.js' %}"></script>
+		<script src="{% static 'chart/js/my_chart_data.js' %}"></script>
+
+		<script type="text/javascript">
+			var api_url = `/pro/api/get_mesticket_stat/`;
+			var jsonData  = [];
+			var it_works = false;
+			// go ...
+			loadDataChart(api_url);
+
+				//console.log("api ok " +  jsonData.id.encours);
+			// chart
+			data_in = [
+					jsonData.id.nouveau,
+					jsonData.id.enattente,
+					jsonData.id.encours,
+				 	jsonData.id.resolue,
+				 	jsonData.id.cloturee,
+					jsonData.id.annulee,
+			];
+			// print chart
+			printChart('id_canvas_chart',	data_in);
+		</script>
+
+
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid">
+  <!--  include jumbotron --->
+  <div class="jumbotron">
+      <h2 class="text-center"> Chart Projects Histogramme des mes tickets </h2>
+  </div>
+
+	<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                </div>
+
+                <div class="panel-footer">
+                    <div class="row">
+											<canvas id="id_canvas_chart" width="200" height="40"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+</div> <!-- fin container -->
+{% endblock %}

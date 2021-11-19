@@ -1,0 +1,47 @@
+<!-- template for the modal component -->
+{% load avatar_tags %}
+<template class="container" id="members_template">
+    <div class="col-lg-offset-2 col-lg-6">
+      <div class="form-group">
+        <input class="form-control col-sm-2" type="text" v-model="cle"  @input="api_filter_members(cle)"  @change.prevent="api_filter_members(cle)" value="ok" placeholder="Saisir nom du membre">
+      </div>
+      <button v-show="false" type="button" class="btn btn-success"  v-on:click.prevent="members_disponible" > Tout le monde </button>
+
+      <table class="table table-striped" >
+        <thead class="thead thead-inverse"> <small class="text-muted">[[ users_dispo.length ]]</small>
+
+        <th colspan="1">Select</th>
+        <th><a>avatar</a> </th>
+        <th><a @click="sortBy='full_name'"> Nom</a> </th>
+        <th><a @click="sortBy='fonction'"> Fonction</a> </th>
+        <th><a @click="sortBy='service'"> Service</a> </th>
+        <th> Email  </th>
+        </thead>
+            <tr class="text-center" v-for="(member, index) in SortedMembersDispo"  :key="index">
+              <td>
+                <input type="checkbox"  v-bind:checked="checked" v-on:change="selectMember( $event.target.checked, member.id, key)" class="form-check-input" />
+              </td>
+              <td v-if="member.photo">
+                 <img  class="img-circle" v-bind:src="'/static/' + member.photo" width="60"  height="60">
+              </td>
+              <td v-else> {% avatar member 65 %} </td>
+
+              <td> [[ member.full_name ]]</td>
+              <td v-if="member.fonction"> [[ member.fonction.name ]] </td>
+              <td v-else> Fonction Inconnu</td>
+
+              <td v-if="member.service"> [[ member.service.name ]] </td>
+              <td v-else> Service Inconnu</td>
+              <td v-if="member.user"> [[ member.user.email  ]] </td>
+            </tr>
+      </table>
+      <div class="form-group">
+        <button   type="button" class="btn btn-warning"  @click.prevent="api_add_members(event)">Ajouter</button>
+      </div>
+      <div v-show="members_disponible.length > 4" class="row" v-show="users_dispo.length > 4">
+        <button class='btn-warning' @click.prevent="prevPage">Précedent</button>
+        <button class='btn-warning' @click.prevent="nextPage">Suivant</button>
+      </div>
+    </div>
+
+</template>

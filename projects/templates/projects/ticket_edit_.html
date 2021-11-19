@@ -1,0 +1,26 @@
+{% extends "base_edit.html" %}
+
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+
+{% block main_side %}
+
+<div class="container">
+  <div class="col-lg-6">
+    <form class="form" action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-group">
+        <input type="submit" class="btn btn-warning btn-lg" value="Enregistrer">
+      </div>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

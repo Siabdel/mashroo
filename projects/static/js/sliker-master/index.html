@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<title>formflex</title>
+
+	<meta name="description" content="Description courte de la page" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Language" content="fr" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="./assets/css/style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+	<link href="./assets/img/favicon.png" rel="shortcut icon" type="image/png" />
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="./assets/js/demopage-prefunctions.js"></script>
+</head>
+<body>
+
+<div id="wrapper">
+
+<ul id="buttons_dl">
+	<li>
+		<a href="https://github.com/Zenike/sliker">
+		Download on <strong>GITHUB</strong>
+		</a>
+	</li>
+</ul>
+
+<h1 class="logo-header">
+	<img src="./assets/img/logo-sliker.svg" alt="">
+</h1>
+
+<!-- /FIN DU HEADER ------------------------------------------------------------------------------->
+
+<h2 class="sliker-example-title">
+	Classical
+</h2>
+
+<div class="sliker-example-text">
+	the "sliker__item--selected" class is optionnal. Without it, the slider will simply start at
+	the first sliker__item
+</div>
+
+<section class="example-1">
+
+<div id="slider_1" class="sliker">
+	<div class="sliker__window">
+		<ul class="sliker__track">
+			<li class="sliker__item"><div class="imgblock1"></div></li>
+			<li class="sliker__item sliker__item--selected"><div class="imgblock2"></div></li>
+			<li class="sliker__item"><div class="imgblock3"></div></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){
+	$('#slider_1').sliker();
+});
+</script>
+
+</section>
+
+<script>
+	createExampleBlockById(1);
+</script>
+<!--------------------------------------------------------------------------------->
+
+<h2 class="sliker-example-title">
+	Classical with "safeload"
+</h2>
+
+<div class="sliker-example-text">
+	"sliker--safeload" is an option that preserve the aspect of the slider before
+	the initialization of the javascript (window load here). In this example, the call is commented out
+	to show the slider style in this short period of time before loading.
+</div>
+
+<section class="example-2">
+
+<div id="slider_2" class="sliker sliker--safeload">
+	<div class="sliker__window">
+		<ul class="sliker__track">
+			<li class="sliker__item"><div class="imgblock1"></div></li>
+			<li class="sliker__item sliker__item--selected"><div class="imgblock2"></div></li>
+			<li class="sliker__item"><div class="imgblock3"></div></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+// $(document).ready(function(){
+// 	$('#slider_2').sliker();
+// });
+</script>
+
+</section>
+
+<script>
+	createExampleBlockById(2);
+</script>
+
+<!--------------------------------------------------------------------------------->
+
+<h2 class="sliker-example-title">
+	With customs icons
+</h2>
+
+<div class="sliker-example-text">
+	Bullets and arrows are customs.
+	The options are in the data-properties on the root of the slider
+</div>
+
+<section class="example-3">
+
+<div id="slider_3" class="sliker" data-arrow="fa fa-caret" data-bullet="<i class='fa fa-star'></i>">
+	<div class="sliker__window">
+		<ul class="sliker__track">
+			<li class="sliker__item"><div class="imgblock1"></div></li>
+			<li class="sliker__item"><div class="imgblock2"></div></li>
+			<li class="sliker__item"><div class="imgblock3"></div></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){
+	$('#slider_3').sliker();
+});
+</script>
+
+</section>
+
+<script>
+	createExampleBlockById(3);
+</script>
+
+<!--------------------------------------------------------------------------------->
+
+<h2 class="sliker-example-title">
+	Sliker multi pics
+</h2>
+
+<div class="sliker-example-text">
+	With the "liquid" option at 0, the sliker__items don't thake the full with.
+	So, we need to set their width in css to see them.<br>
+	IMPORTANT: a sliker without liquid should NOT use the "sliker--safeload" option.
+</div>
+
+<section class="example-4">
+
+<div id="slider_4" class="sliker">
+	<div class="sliker__window">
+		<ul class="sliker__track">
+			<li class="sliker__item"><div class="imgblock1"></div></li>
+			<li class="sliker__item"><div class="imgblock2"></div></li>
+			<li class="sliker__item"><div class="imgblock3"></div></li>
+			<li class="sliker__item"><div class="imgblock4"></div></li>
+			<li class="sliker__item"><div class="imgblock5"></div></li>
+			<li class="sliker__item"><div class="imgblock6"></div></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){
+	$('#slider_4').sliker({
+		'nbr_li': 2,
+		'liquid': 0,
+	});
+});
+</script>
+
+<style>
+#slider_4 .sliker__item {
+width: 250px;
+}
+</style>
+
+</section>
+
+<script>
+	createExampleBlockById(4);
+</script>
+
+<!--------------------------------------------------------------------------------->
+
+</div><!-- \#wrapper -->
+
+<script type="text/javascript" src="./sliker.js"></script>
+<script type="text/javascript" src="./assets/js/demopage-postfunctions.js"></script>
+</body>
+</html>

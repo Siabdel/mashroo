@@ -1,0 +1,40 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="jumbotron">
+  <div class="card-heading row">
+        <div class="col-lg-10">
+          <ul class="list-unstyled text-info">
+            <li>  <h3>Demande approvisionnement code  *** <big>   </big></li>
+          </ul>
+
+        </div>
+        <div class="row">
+          <span id="id_content_msg" class="text-warning">  </span>
+
+        </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <h2>pdf Test</h2>
+      <!--- bloc résultats --->
+      <table class="table table-responsive table table-striped">
+          <thead class="thead thead-inverse">
+          <tr> <th>date</th> <th>code_of</th> <th>commande</th> <th>machine</th> </tr>
+        </thead>
+
+      {% for of in  object_list %}
+        <tbody>
+          <tr>
+            <td>{{ of.date_debut_reelle}}</td>
+            <td>{{ of.code_of}}</td>
+            <td>{{ of.commande_id}}</td>
+            <td>{{ of.machine_travail_id}}</td>
+          </tr>
+        </tbody>
+      {% endfor %}
+      </table>
+</div>
+{% endblock %}

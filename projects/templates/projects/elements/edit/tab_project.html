@@ -1,0 +1,69 @@
+<div class="row container well">
+  <ul class="list-group">
+    <li class="list-group-item"> <label for="title" class="col-sm-1 control-label">Code </label>
+      {{ form.code.errors }}
+      <label class="data-value"> {{ form.code}} </label>
+
+      {% if object.status == 'CLOSED' %}
+        <label class="data-value col-xs-offset-3"> {{ object.status}}  </label>
+        <label class="data-value"> <button type="button" class="btn btn-info" onclick="$('#id_status_project').toggle(1000);" >Modifiez</button> </label>
+        <label id="id_status_project" style="display:none" class="data-value col-xs-offset-3"> {{ form.status }} </label>
+
+      {% else %}
+        <label class="data-value col-xs-offset-3"> {{ form.status }} </label>
+
+        <ul>
+          <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Date de début</label>
+            <a href="#" onclick="$('#calendar1').toggle(500);"><em class="fa fa-calendar fa-lg"></em> <label for="">{{ project.date_debut }}</label>  </a>
+            <label id='calendar1' class="data-value text-info text-bold col-xs-offset-1" style='display:none'>
+               {{ form.date_debut }}
+            </label>
+          </li>
+
+          <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Date d'echeance </label>
+            <a href="#" onclick="$('#calendar2').toggle(500);"><em class="fa fa-calendar fa-lg"></em> <label for="">{{ project.due_date }}</label>  </a>
+            <label  id='calendar2' class="data-value text-info text-bold col-xs-offset-1" style='display:none'>
+               {{ form.due_date }}
+            </label>
+          </li>
+        </ul>
+      {% endif %}
+    </li>
+
+
+    <li class="list-group-item"> <label for="title" class="col-sm-1 control-label">Nom du projet </label>
+      {{ form.title.errors }}
+      <label class="data-value"> {{ form.title}} </label>
+      <label class="data-value"> <button type="button" class="btn btn-info" onclick="$('#id_desc_01').toggle(1000);" >Déscription </button> </label>
+    </li>
+
+    <li id="id_desc_01" class="list-group-item" style="display:none">
+      {{ form.description.errors }}
+      <label for="description" class="col-md-12 control-label">Description </label>
+      <p class="data-value"> {{ form.description }}   </p>
+
+    </li>
+
+    <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Responsable</label>
+      <label class="data-value text-info text-bold"> {{ form.manager}} </label>
+    </li>
+
+    <li class="list-group-item"> <label for="title" class="col-sm-2 control-label">Categorie</label>
+      <label class="data-value text-info text-bold "> {{ form.category}} </label>
+    </li>
+  </ul>
+</div>
+
+
+{% if not object %}
+  <script type="text/javascript">
+    $( document ).ready(function(){
+      // si titre chagne
+      $('#id_title').change(function(){
+        var titre = $('#id_title').val();
+        $('#id_description').val(titre);
+      })
+
+    })
+  </script>
+{% endif %}

@@ -1,0 +1,72 @@
+{% extends "base_detail.html" %}
+
+{% load i18n %}
+{% load breadcrumbs %}
+{% load details static %}
+
+{% block breadcrumbs %}
+    {% add_crumb 'Home' '/' %}
+    {% add_crumb 'Projects' 'project_list' %}
+    {% add_crumb object %}
+{% endblock %}
+
+
+{% block left_side %}
+  <h4> ShellSea Accueil</h4>
+  <hr>
+  {% include 'elements/pro_left_menu.html' %}
+{% endblock %}
+
+{% block right_side %}
+  <h4> ShellSea Accueil</h4>
+  <div  class="col-sm-6">
+    <span id="id_content_msg" class="">  </span>
+    <A href="/da/cart/listitem/" >
+      <img class="pull-left " src="{% static 'images/project_room.jpeg' %}" height="182" width="300" />
+    </A>
+  </div>
+  <hr>
+
+{% endblock %}
+
+{% block objectactions %}
+  {% if perms.projects.add_project %}
+  <li class="add"><a class="btn btn-success btn-lg" title="{% trans 'Add' %}" href="{% url 'project_add' %}">{% trans 'Add' %}</a></li>
+  {% endif %}
+
+  {% if object.pk in obj_perms.projects.change_project %}
+  <li class="edit"><a class="btn btn-success btn-lg" title="{% trans 'Edit' %}" href="{% url 'project_edit' object.code %}">{% trans 'Edit' %}</a></li>
+  {% endif %}
+
+  {% if object.pk in obj_perms.projects.delete_project %}
+  <li class="delete"><a class="btn btn-success btn-lg" title="{% trans 'Delete' %}" href="{% url 'project_delete' object.code %}">{% trans 'Delete' %}</a></li>
+  {% endif %}
+
+  {% if perms.projects.view_project %}
+  <li class="all"><a class="btn btn-success btn-lg" title="{% trans 'All' %}" href="{% url 'project_list' %}">{% trans 'show All' %}</a></li>
+  {% endif %}
+
+  {% if object.pk in obj_perms.projects.view_project %}
+  {% if user not in object.stream.followers.all %}
+  <li class="follow"><a class="btn btn-success btn-lg" title="{% trans 'Follow' %}" href="{% url 'stream_follow' object.stream request.path %}">{% trans 'Follow' %}</a></li>
+  {% else %}
+  <li class="leave"><a class="btn btn-warning btn-lg" title="{% trans 'Leave' %}" href="{% url 'stream_leave object.stream' request.path %}">{% trans 'Leave' %}</a></li>
+  {% endif %}
+  {% endif %}
+
+{% endblock %}
+
+
+{% block section %}
+<div class="details">
+    <table class="properties">
+        {% property_table object "['manager', ['author', 'created'], ['status', 'closed'], 'description', 'working_hours', 'categories', 'tags']" %}
+    </table>
+</div>
+{% comment %}
+  {% with dashboard=object.dashboard %}
+  {% include "elements/dashboard.html" %}
+  {% endwith %}
+  {% include "elements/comments.html" %}
+{% endcomment %}
+{% endblock %}

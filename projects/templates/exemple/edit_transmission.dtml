@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="content-fluid">
+      <form action="add_transmission" method="POST" id="form_01">
+
+        <ul class="list-group">
+          <li class="list-group-item"> <label for="create" class="col-sm-6 control-label">Ordre de fabrication </label>
+            <label class="data-value"> <dtml-var code_of > </label>
+          </li>
+        </ul>
+
+       <div class="form-group">
+           <select   name="titre_id"   >
+                <dtml-in sql_liste_categorie_transmission skip_unauthorized >
+                     <option class="form-input"  value="<dtml-var id >" > <dtml-var libelle> </option>
+                </dtml-in>
+           </select>
+        </div>
+
+        <div class="form-group">
+          <textarea   class="form-control" id="id_description" name="description"  rows="4" cols="50"> </textarea>
+        </div>
+
+        <div class="form-group">
+          <input  type="hidden" name="code_of" value="<dtml-var code_of >">
+        </div>
+
+        <div class="modal-footer input-group-btn">
+          <input type="submit" id="id_save_comment"    class="btn btn-primary" value="Enregistrer">
+
+        </div>
+
+      </form>
+  </dsiv>
+</div>

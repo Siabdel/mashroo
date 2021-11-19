@@ -1,0 +1,154 @@
+{% extends "base_detail.html" %}
+
+{% load i18n %}
+{% load details %}
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+
+{% block main_side %}
+
+
+<div class="container-fluid" id="app">
+    <HR>
+    <div class="card bg-warning text-white col-lg-12">
+      <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+
+				{% if user.id == object.author.id  and  user in object.project.participants.all   %}
+						<A href="{% url 'ticket_add' object.project.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Creer</A>
+						<A  href="{% url 'ticket_edit' object.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Modifier </A>
+					{% else %}
+						{% for member in object.project.participants.all  %}
+							{% if user.id == member.user.id   %} 
+							<A href="{% url 'ticket_add' object.project.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Creer</A>
+							<A  href="{% url 'ticket_edit' object.pk %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Modifier </A>
+							{% endif %}
+						{% endfor %}
+
+				 {% endif %}
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+
+      </div>
+    </div>
+
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card bg-secondary text-white">
+              <div class="card-heading  text-white" style="background-color:'#CCE'">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item active"><a class="nav-link text-white" href="#tab1primary" data-toggle="tab">Tâche |</a></li>
+													<li class="nav-item"><a class="nav-link disabled text-white" href="#tab4documents" data-toggle="tab">Documents</a></li>
+													<li class="nav-item"><a class="nav-link disabled text-white" href="#tab5images" data-toggle="tab">Images</a></li>
+													<li class="nav-item"><a class="nav-link disabled text-white" href="#tab6comments" data-toggle="tab">Suivi</a></li>
+                      </ul>
+              </div>
+          </div>
+          <!-- Panel multi anglaits -->
+          <div class="panel-body">
+            <div class="tab-content">
+							<!-- detail project -->
+              <div class="tab-pane active text-bold col-lg-12" id="tab1primary">
+
+									<div class="col-lg-2 push-left">
+											{% for elem in object.documents.all %}
+													{% if elem.document.file_type  in "png, jpg, jpeg" %}
+														{%  if elem.document.active  %}
+															<img src="/static/media/{{elem}}"    width="250"  height="250"/></p>
+														{% endif %}
+													{% elif forloop.last == True %}
+													<img src="/static/images/Project_puzzle.jpg"   width="250"  height="250"/></p>
+													{% endif %}
+											{% endfor %}
+									</div>
+
+									<div class="col-lg-9 col-lg-offset-1">
+										<div class="col-lg-6">
+												<ul class="list-unstyled">
+													<fieldset class="">
+														<li><h3 class="titre"> {{ object.title }}    </h3> </li>
+														<li>
+															<hr>
+															<span>project : </span>  <span class="badge badge-secondary"> <h5>{{ object.project.code}}</h5> </span>
+															<span>Reference : </span>  <span class="badge badge-secondary"> <h5>{{ object.id}}</h5> </span>
+
+														</li>
+														<li> <br><span>Description : </span>
+															<p >  {{ object.description | linebreaks  }}  </p>
+														</li>
+
+														<label class="data-value"> {{ form.tags }} </label>
+														</ul>
+													</fieldset>
+
+											</div>
+											<div class="col-lg-6">
+													<ul class="list-unstyled">
+													<li>
+														<hr>
+														  <span>Date début : </span> <span class="">{{ object.start_date |date:"D d M Y" }}  {{ object.start_date|time:"H:i" }}  </span>
+													</li>
+													<li>
+
+															<span>Date de réalisation  : </span> <span class="">{{ object.end_date |date:"D d M Y" }}  {{ object.end_date|time:"H:i" }}  </span>
+																<hr>
+													</li>
+													<li>
+														<span class="">Status : </span>	<span class="label-primary badge badge-light" style="color:#fff; background-color:{{ object.eventColor }}"> {{ object.status }} </span>
+													</li>
+													<li> <span class="">Auteur : {{ object.author}} </span> </li>
+													<li> <span class="text-info">Assignée à  : {{ object.assignee}} </span> </li>
+													<li> <span class="">Date échéance : </span> <span class=""> {{ object.due_date}} </span></li>
+												</ul>
+											</div>
+									</div>
+              	</div>
+
+
+              <div class="tab-pane fade" id="tab4documents">
+								<ul class="list-group">
+									{% for elem in object.documents.all %}
+										<li class="list-group-item" >
+											{% if elem.document.file_type in "'pdf', 'doc', 'csv', 'xls'" %}
+											<a href="/static/media/{{ elem.document }}"> {{ elem.document }} </a>
+											{% endif %}
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+							<div class="tab-pane fade" id="tab5images">
+								<ul class="list-group">
+									{% for elem in object.documents.all %}
+										<li class="list-group-item" >
+											{% if elem.document.file_type == 'jpeg' %}
+											<a href="/static/media/{{ elem.document }}">	<img src="/static/media/{{elem}}" heigth="40" width="200" alt="{{ elem }}"></a>
+											{% elif elem.document.file_type == 'png' %}
+											<a href="/static/media/{{ elem.document }}">	<img src="/static/media/{{elem}}" heigth="40" width="200" alt="{{ elem }}"></a>
+											{% endif %}
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+							<div class="tab-pane fade" id="tab6comments">
+									{% include 'elements/show/tab_detail_suivi.html' %}
+							</div>
+
+            </div>
+          </div>
+  </div>
+</div>
+</div><!-- fin container -->
+
+{% endblock %}

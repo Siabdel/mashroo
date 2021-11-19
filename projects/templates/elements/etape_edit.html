@@ -1,0 +1,119 @@
+<div class="container-fluid" id="app">
+<!-- * form post etape*  -->  
+<div class="row"  @validation.prevent="alert('validation a ete emit !');">
+  <div class="col-md-4">
+    <div class="row well" >
+      <form class="form-inline" action="" method="post">
+        {% csrf_token %}
+        <div class="form-group"> {{ object.pk }}
+          <label for="title"></label>
+          <input type="text"   name="title" value="">
+        </div>
+
+        <div class="form-group  hidden">
+          <label for="usr">Description:</label>
+          <textarea name="description" rows="8" cols="80"></textarea>
+        </div>
+        <div class="form-group">
+          <input  type="submit"  @click.prevent="add_etape_project([[object.pk]])"   class="btn-warning btn-lg btn-block"   value="Add">
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+	<div class="row hidden">
+		<!-- use the modal component, pass in the prop -->
+		<modal v-if="showModal" @close="showModal = false">
+			<!-- -->
+			<h3 slot="header">Confirmation de la validation DA</h3>
+		</modal>
+	</div>
+
+  <table class="table table-striped">
+    <form id="form_da_selectionner" action="#" >
+      <thead class="thead thead-inverse">
+        <tr>
+          <th>Nom de participant</th>
+          <th class="text-center" colspan=3><em class="fa fa-cogs fa-lg">Action</em></th>
+        </tr>
+      </thead>
+      <tbody>
+				<thead>
+					<th v-if="etapes.length === 0" class="text-danger text-bold" colspan="5" > pas d'etapes a validez ! </th>
+				</thead>
+          <tr  v-show="etapes"  v-for="(etape index) in etapes " :key=index class="list-unstyled">
+          		<td><input type="hidden"     disabled readonly  CHECKED  /> </td>
+          		<td v-if="index === 0">  <h3 class="text-info"> [[etape.fields.code_of]] </h3>  </td>
+          		<td v-else-if="(index > 0) && (etape.fields.code_of===etapes[index-1].fields.code_of)">  --</td>
+          		<td v-else> <h3 class="text-info"> [[etape.fields.code_of]] <h3></td>
+          		<td class="text-warning"> [[ etape.fields.article ]] - [[ etape.fields.nom_article ]] </td>
+          		<td> [[ etape.fields.commande]] </td>
+          	 	<td>
+          			<Button  v-if="(!etape.fields.selected) && (!etape.fields.validate)" class="btn-warning btn-lg btn-block"
+                  :transition="transition_select" @click.prevent="select_article_ligneda(event, [[etape.pk]])">Cloture</button>
+          		</td>
+          </tr>
+      </tbody>
+    </form>
+
+  </table>
+</div>
+<!-- PAGINATION -->
+
+</div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	// toggle btn selectionne
+	function toggle_check(event){
+		//checker
+		var button_select = event.target;
+		//$('input:checkbox ')
+		if ($(button_select).is(':checked')){
+		  $(id_lda).prop('checked', false);
+		}else{
+		  $(id_lda).prop('checked', true);
+		}
+	}
+
+});
+</script>
+
+	<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+  <transition name="modal" >
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+
+          <div class="modal-header">
+            <slot name="header">
+              Validation DA
+            </slot>
+          </div>
+
+          <div class="modal-body">
+            <slot name="body">
+              confirmez-vous la validation de la commande ?
+            </slot>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              <button class="modal-default-button" @click="$emit('close');">
+                Quitter
+              </button>
+							<button id="id_validation"  class="modal-default-button"
+							 @click.prevent="emitValidationDa(demande_appro_id); $emit('close');">
+								<em class="fa fa-save"></em>Validez </button>
+
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</script>

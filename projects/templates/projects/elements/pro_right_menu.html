@@ -1,0 +1,41 @@
+<aside class="aside row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <button class="btn"><i class="fa fa-home"></i> <a href="/" > Home </button>
+    </div>
+
+    <div class="panel-body "><h4>ProjectQuery </h4>
+      <ul class="list-group">
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/created_semaine">cette semaine</a></li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/created_mois"> du mois</a></li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/created_annee"> année encours</a></li>
+        <li> <hr> </li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/due_semaine">la semaine avant echéance</a></li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/due_mois"> du mois avant echéance</a></li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/due_annee">projet en cours</a></li>
+        <li class="list-group-item text-info"> <a   href="/pro/lastprojects/closed">projet clos </a></li>
+      </ul>
+
+      <div class="panel-footer">
+          <legend>
+            <a href="#" onclick="$('#legend_id').toggle();"> Légend </a>
+          </legend>
+      </div>
+
+      <div style="display: none" id="legend_id">
+        <img src="/static/images/Matrice-Important-Urgent.png" width="118" height="250"/>
+        <div class="">
+          <ul class="list-group" >
+            <li class=" "><span class="badge badge-yellow"> NOUVEAU </span></li>
+            <li class=" "><span class="badge badge-encours"> ENCOURS </span></li>
+            <li class=""><span class="badge badge-apple" > TERMINEE </span></li>
+            <li class=""><span class="badge badge-green"> CLOTUREE </span></li>
+            <li class=""><span class="badge badge-grey"> ANULLEE </span></li>
+            <li class=""><span class="badge badge-info">EN ATTENTE</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,69 @@
+{% extends "base_projects.html" %}
+{% load i18n static staticfiles %}
+
+{% block extra_js %}
+ <!-- VUEJS  -->
+ <script type="text/javascript">
+   var project_id = '{{ object.pk}}';
+ </script>
+
+ <script src="{% static 'vuejs/vue.min.js' %}"></script>
+ <script src="{% static 'vuejs/projects/edit_project_vue.js' %}"></script>
+ <!-- VUEJS  -->
+
+ <script type="text/javascript">
+	$(document).ready(function(){
+    // fenetre modal Confirmation
+    // hide nb_of_sem
+
+    $("#id_nb_of").hide();
+    // Si of est soldé ou lancer on fige l'edition of
+
+    if($("#id_statut").val() == 'S' || $("#id_statut").val() == 'L'){
+      $("input").attr( "READONLY", true);
+      $("input[type='submit']").prop( "DISABLED", true);
+    }
+
+    // url pour lancer la simulation produits à conommer
+    $("id_produit_consommer").click( function(){
+      //$("simulateur_01").click();
+    })
+
+    // controler l'enregistrement
+    $("#save_01").click(function(event){
+      //alert("on enregistre !!");
+      $("#condirm_maj").modal('show');
+      event.preventDefault();
+
+    });
+
+    $("#save_02").click(function(event){
+      // $("#form_01").attr('action', 'add');
+      $( "#form_01" ).submit();
+      //alert("on enregistre !!");
+      $("#quit_02").click();
+      //window.history.go(-1)
+      //event.preventDefault();
+    });
+
+  // confirmer la cloture d'of
+  // afficher popup avec barre progress wait
+  $('#confirm_DA').on('show.bs.modal', function(e) {
+      // on affiche barre progress si ok est saisir
+      $("#id_ok_wait").click(function(event){
+        $("#id_br_wait").show();
+      });
+
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+  });
+
+  // afficher popup sans barre progress wait
+  $('#confirm_cloture, #confirm_start').on('show.bs.modal', function(e) {
+      $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+  });
+
+
+});// fin document ready
+
+</script>
+{% endblock %}

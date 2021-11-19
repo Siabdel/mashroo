@@ -1,0 +1,160 @@
+{% load i18n static staticfiles %}
+<!doctype html>
+<html lang='fr'>
+
+<head>
+	   <meta charset="UTF-8">
+     <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
+     <!-- BOOTSTRAP -->
+		 <!-------------------->
+		 <!-- FullCalendar  --->
+		 <!-------------------->
+		  <!------CSS------>
+			<link rel='stylesheet' href="{% static 'bootstrap/dist-3.3.5/css/bootstrap.css' %}"  media="screen" />
+		  <link rel='stylesheet' href="{% static 'bootstrap/dist-3.3.5/css/bootstrap-datepicker.css' %}"  media="screen" />
+		  <link rel='stylesheet' href="{% static 'jquery/css/popup.css' %}"  >
+		  <link rel='stylesheet' href="{% static 'jquery/css/jquery-ui.css' %}"  >
+			<link rel='stylesheet' href="{% static 'css/style_vuejs.css' %}"  >
+		  <link rel='stylesheet' href="{% static 'css/blog_style.css' %}"  >
+
+     {% block extra_head %}
+     {% endblock %}
+
+</head>
+
+
+<body>
+
+<header class="navbar navbar navbar-fixed-top  bg-primary container-fluid" role="banner">
+	<div class="container">
+		<div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		    </button>
+		    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }} </a>{% endif %}
+				{% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+				</div>
+		</div>
+	  <div class="collapse navbar-collapse container">
+	     <!-- page_menu "pages/menus/dropdown.html" -->
+	       <!-- Collect the nav links, forms, and other content for toggling -->
+				<ul class="nav navbar-nav navbar-inverse navbar-right">
+					<li class="hidden">	<a href="#page-top"></a></li>
+					<li class="hidden"><a href="/admin">Administrateur</a></li>
+					<li class=""><a href="/">Accueil</a></li>
+
+					<li class="dropdown">
+						<a href='#' class="dropdown-toggle" data-toggle="dropdown"> Mon compte <b class='caret'></b></a>
+						<ul class="dropdown-menu">
+							<li class='active'>
+								{% if user.is_authenticated %}
+									<a class="page-scroll" href="/account/logout"><b>Se déconnecter</b></a>
+									{% else %}
+										<li class='text-center-xs active'><a href="/account/login">Se connecter a Atlasoft</a></li>
+								{% endif %}
+							</li>
+						</ul>
+					</li>
+
+					<li class="pull-left">
+						{% if user.is_authenticated %}
+							<small class='text-left-xs'> Bonjour Mr(Mme) <br>  {{ user.first_name }} {{ user.last_name}} </small>
+						{% endif %}
+					</li>
+			</ul>
+	  </div>
+	</div>
+</header><!--/header-->
+<header>
+
+ </header>
+
+	<div class='row'>
+		<div class="col-md-12">
+			<div  id="demo" class="row jumbotron entete_sce_003 text-center" >
+				<div class="col-md-4">
+				</div>
+
+				<div class="col-md-4 col-offset-md-12 entete_sce_005">
+				</div>
+				<div class="col-md-4 col-offset-md-12">
+					<h3 class="push-right"> <img class="img-rounded" src="{% static 'images/shellSeaRed01.jpeg'  %}"  width="80" height="60" />
+						<i> Atlasoft Agence Web </i>  </h3>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  <div class="container-fluid" id="body">
+		<div class="row">
+			{% if messages %}
+			  <ul id="messages">
+			      {% for message in messages %}
+			      <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
+			      {% endfor %}
+			  </ul>
+			{% endif %}
+			{% if form.errors %}
+			    {% for field in form %}
+			        {% for error in field.errors %}
+			            <div class="alert alert-danger">
+			                <strong> {{ field.label }} - {{ error|escape }}</strong>
+			            </div>
+			        {% endfor %}
+			    {% endfor %}
+			    {% for error in form.non_field_errors %}
+			        <div class="alert alert-danger">
+			            <strong>{{ error|escape }}</strong>
+			        </div>
+			    {% endfor %}
+			{% endif %}
+
+		</div>
+
+		{% block title %}{% endblock %}
+		{% block main %}
+
+			<div class="row">
+				<!-- left side -->
+				<div class="col-md-2">
+						{% block left_side %}
+						  <h3>Column 1</h3>
+						{% endblock %}
+				</div>
+
+				<!-- center side -->
+				<div class="col-md-8">
+					{% block main_side %}
+					  <h3>Column 2</h3>
+					{% endblock %}
+				</div>
+
+				<!-- right side -->
+				<div class="col-md-2">
+						{% block right_side %}
+						  <h3>Column 3</h3>
+						{% endblock %}
+				</div>
+			</div>
+
+
+		{% block template_vuejs %}
+		{% endblock %}
+		{% endblock %}
+
+  </div>
+
+	{% block extra_js %}
+	{% endblock %}
+
+
+	{% block extra_style %}
+	{% endblock %}
+
+  <div id="footer">{% block footer %}{% endblock %}</div>
+
+	</body>
+</html>

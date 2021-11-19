@@ -1,0 +1,56 @@
+"""
+WSGI config for mashroo project.
+
+It exposes the WSGI callable as a module-level variable named ``application``.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
+"""
+import os
+import sys
+import time
+import signal
+
+import os, sys, site
+
+CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+WORK_DIRECTORY = os.path.join(CURRENT_DIRECTORY, '..')
+
+#Add the site-packages
+site.addsitedir('/home/django/.virtualenvs/mashroo/lib/python3.7/site-packages')
+
+
+#adding the project to the python path
+sys.path.append(WORK_DIRECTORY)
+#adding the parent directory to the python path
+sys.path.append(os.path.join(WORK_DIRECTORY, '..'))
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_project.settings")
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mashroo.settings')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.append(BASE_DIR)
+sys.path.append('/home/django/.virtualenvs/envMashroo/lib/python3.7/site-packages')
+
+os.environ['DJANGO_SETTINGS_MODULE'] = "mashroo.settings"
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "planning.settings")
+
+
+from django.core.wsgi import get_wsgi_application
+
+try:
+    application = get_wsgi_application()
+    print("WSGI without exception")
+
+except Exception:
+    print("handling WSGI exception")
+    # Error loading applications
+    if 'mod_wsgi' in sys.modules:
+        #traceback.print_exc()
+        os.kill(os.getpid(), signal.SIGINT)
+        time.sleep(2.5)

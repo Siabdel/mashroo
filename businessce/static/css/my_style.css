@@ -1,0 +1,44 @@
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+  h1, h3, h2 {
+    color:blue;
+    font-size:22px;
+  }
+
+  .table  th {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: yellow;
+  }
+
+  td,
+  th {
+    padding: 0;
+    color:blue;
+    background-color: transparent;
+  }
+
+
+}

@@ -1,0 +1,43 @@
+<div class="row container well">
+
+       <div id="monslide" class="carousel slide" data-ride="carousel">
+                  <ol class='carousel-indicators'>
+                      <li data-target='#monslide' data-slide-to='0'> </li>
+                      <li data-target='#monslide' data-slide-to='1'></li>
+                  </ol>
+
+                  <div class="carousel-inner">
+                    {% with total=object.get_images_project %}
+                      {% for photo in object.get_images_project %}
+                          <div   {% if photo.document.active   %} class= 'item active' {% else %} class= 'item' {% endif %}>
+                              <div class="col-md-6">
+                                <a href="/static/media/{{ photo}}">  <img class="img-rounded" src='/static/media/{{ photo}}' width=500 height=300 />  </a>
+                              </div>
+                              <div class="">
+                                 <h3 class="text-info">{{ photo.titre }} </h3>
+                                 <blockquote class="text-left">{{ photo.description }} </blockquote>
+                              </div>
+                          </div>
+
+
+                      {% endfor %}
+                      {% endwith %}
+                      <!-- si pas d'image active  -->
+
+                      {% if not  object.get_image_active %}
+                        <img src="/static/images/Project_puzzle.jpg"   width="250"  height="250"/></p>
+                      {% endif %}
+
+                  </div>
+       </div>
+
+       <!-- controle pagination -->
+       <div class='row'>
+         <a href="#" class='left carousel-control' data-slide='prevent'>
+                    <span class='glyphicon glyphicon-chevron-left'></span>
+         </a>
+         <a href="#" class='right carousel-control' data-slide='next'>
+                    <span class='glyphicon glyphicon-chevron-right'></span>
+         </a>
+       </div>
+</div>

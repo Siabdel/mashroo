@@ -1,0 +1,68 @@
+{% extends 'base_businessce.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+	{% block extra_js %}
+		<!-- VUEJS  -->
+		<link rel="stylesheet" href="{% static 'chart3D/css/style.css' %}">
+	<!--<script src="https://www.amcharts.com/lib/3/amcharts.js"></script> -->
+	<!--<script src="https://www.amcharts.com/lib/3/serial.js"></script> -->
+	<script src="{% static 'chart3D/js/amcharts.js' %}"></script>
+	<script src="{% static 'chart3D/js/serial.js' %}"></script>
+	<script src="{% static 'chart3D/js/my_3Dchart_data.js' %}"></script>
+  {% endblock %}
+
+{% block main_side %}
+
+
+<div id="chartdiv">.</div>
+<div class="container-fluid">
+	<h3> STRAND</h3>
+	<h5>chart mes actions encours</h5>
+  <div class="row text-center" style="overflow:hidden;">
+    <div class="col-sm-3" style="float: none !important;display: inline-block;">
+      <label class="text-left">Top Radius:</label>
+      <input class="chart-input" data-property="topRadius" type="range" min="0" max="1.5" value="1" step="0.01" />
+    </div>
+
+    <div class="col-sm-3" style="float: none !important;display: inline-block;">
+      <label class="text-left">Angle:</label>
+      <input class="chart-input" data-property="angle" type="range" min="0" max="89" value="30" step="1" />
+    </div>
+
+    <div class="col-sm-3" style="float: none !important;display: inline-block;">
+      <label class="text-left">Depth:</label>
+      <input class="chart-input" data-property="depth3D" type="range" min="1" max="120" value="40" step="1" />
+    </div>
+  </div>
+</div> <!-- fin container -->
+
+	<script type="text/javascript">
+		// go ...
+		var data = [];
+
+		$(document).ready(function() {
+			// load data
+			var api_url = `/pro/api/get_project_ticket_stat3D/78/`;
+			//var jsonData3 = '{"data": [{"status": "nouveau", "color": "#FF0F00", "taches": 2}, {"status": "nouveau", "color": "#FF0F00", "taches": 2}]}';
+			// go ...
+			jsonData = loadDataChart3D(api_url);
+			// print chart
+			//const obj = JSON.parse( ApijsonData);
+			//const obj = JSON.stringify( ApijsonData);
+			console.log("api ok ApijsonData  " + jsonData);
+
+				var chart = printChart3D('chartdiv',	jsonData.data);
+		   });
+	</script>
+
+
+{% endblock %}

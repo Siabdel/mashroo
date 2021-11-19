@@ -1,0 +1,40 @@
+{% load avatar_tags %}
+<div class="row">
+  <h5 :project_id=project_id>  </h5>
+
+  <div  @add-member="consol.log('signal emit add !!');"> </div>
+
+  <div class="col-lg-4">
+   <table class="table table-striped" ><legend class="text-muted"> liste des membres associés au projet  : {{ object.code }}</legend>
+     <thead class="thead thead">
+     <th>avatar</th><th>Identifiant</th> <th>Nom</th> <th>Fonction</th>  <th>Service</th><th>Langue</th>
+     </thead>
+         <tr v-show="showDelMember" class="text-center" v-for="(member, key) in members_project_refresh" >
+           <td v-if="member.photo">
+              <img  class="img-circle" v-bind:src="'/static/' + member.photo" width="60" height="60">
+           </td>
+           <td v-else> {% avatar member 65 %} </td>
+            <td> [[ member.id ]] </td>
+            <td v-if="member.user.first_name"> [[ member.user.first_name ]] [[ member.user.last_name ]]</td>
+            <td v-else> [[ member.user.username ]]</td>
+
+            <td v-if="member.fonction"> [[ member.fonction.name ]]   </td>
+            <td v-else> Fonction Inconnu</td>
+
+            <td v-if="member.service"> [[ member.service.name ]] </td>
+            <td v-else> Service Inconnu</td>
+
+            <td v-if="member.language"> [[ member.language ]] </td>
+            <td v-else> Langage Inconnu</td>
+
+            <td><button class="btn btn-warning" type="button" @click.prevent="delete_member({{ object.pk }}, member.id)" >X</button></td>
+         </tr>
+   </table>
+  </div>
+
+<!-- component -->
+  <div  class="col-lg-6">
+    <ul> <li><a href="#" @click.prevent="showAddMember=!showAddMember" >Ajouter des memberes au projet  </a></li> </ul>
+    <compomember  :project_id="{{ project_id }}" @add-member="">  </compomember>
+  </div>
+</div>

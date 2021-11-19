@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+
+{%  block content  %}
+
+<h1>{{ articles.name }}</h1>
+  <form method='POST'>
+    {% csrf_token %}
+    <input type="submit" class="btn btn-danger" value="Delete"> <a href = "{% url 'article_details' article.pk %}">Cancel</a>
+  </form>
+
+{% endblock %}

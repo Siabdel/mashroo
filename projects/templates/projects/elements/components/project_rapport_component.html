@@ -1,0 +1,28 @@
+{% load  staticfiles static %}
+<!-- template for the modal component rapport -->
+<template class="container" id="rapport_template">
+  <div class="row">
+    <!-- * form post etape*  -->
+      <ul class="list-group">
+        <li class="list-group-item">[[ data_stat.project_name | capitalize ]] avec :
+           [[ parseFloat(( data_stat.resolue / data_stat.total_tickets ) * 100 ).toFixed(0) ]] % de réalisés </li>
+        <li class="list-group-item">
+           <img  src="{% static 'images/icone_todo4.png' %}" class="img-circle" width="40"/>
+            <label>todo :</label>
+             <label v-if="data_stat.nouveau >=0"> <span class="badge"> <h5>[[ data_stat.nouveau ]]</h5>  </span></label>
+           <img  src="{% static 'images/icone_doing.png' %}" class="img-circle" width="40"/>
+            <label>doing :</label>
+             <label v-if="data_stat.encours >= 0"> <span class="badge"> <h5>[[ data_stat.encours ]]</h5> </span></label>
+         </li>
+
+        <li class="list-group-item">
+           <img  src="{% static 'images/icone_done.png' %}" class="img-circle" width="40"/>
+            <label>done :</label>  <label v-if="data_stat.resolue >=0">
+              <span  class="badge"> <h5> [[ data_stat.resolue ]] </h5> </label>
+           <img  src="{% static 'images/closed_icon.jpeg' %}" class="img-circle" width="40"/>
+            <label>closed :</label>  <label v-if="data_stat.cloturee >= 0">
+               <span  class="badge"> <h5>[[ data_stat.cloturee]] </h5></span></label>
+        </li>
+      </ul>
+  </div>
+</template>

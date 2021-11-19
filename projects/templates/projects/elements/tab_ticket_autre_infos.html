@@ -1,0 +1,36 @@
+{% load l10n %}
+<div class="row container well">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <label for="type" class="col-sm-2 control-label">Type</label>
+      <label class="data-value text-info text-bold"> {{ form.type }}  </label>
+    </li>
+
+    <li class="list-group-item"> <label for="urgency " class="col-sm-2 control-label">Urgency</label>
+      <label class="data-value text-info text-bold"> {{ form.urgency }} </label>
+    </li>
+
+  	<li class="list-group-item">
+  		<label for="status" class="col-sm-2 control-label">Status</label>
+  		<label class="data-value text-info text-bold"> {{ form.status }}  </label>
+  	</li>
+
+  	<li class="list-group-item"> <label for="tags" class="col-sm-2 control-label">Tags</label>
+  		<label class="data-value text-info text-bold">  <input class="input-form" type="text" name="tags" value="" size="50" />   </label>
+  	</li>
+
+
+  </ul>
+</div>
+<script type="text/javascript">
+
+ $(document).ready(function() {
+
+  $.datepicker.setDefaults( $.datepicker.regional[ "fr" ] ); // texte en french
+
+ 
+  var date_echeance = $('#id_due_date').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+
+});
+
+</script>

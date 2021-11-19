@@ -1,0 +1,149 @@
+{% extends 'base_edit.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+
+{% block main_side %}
+
+<div class="container-fluid" id="app_edit">
+    <HR>
+    <div class="card bg-warning text-white col-md-12">
+      <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+        <A href="{% url 'project_add' %}" class="btn btn-success  text-white" :class=""><em class="fa fa-file"></em> Creer</A>
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+        <A href='#' @click.prevent="save_form_project(false)" class="btn btn-success"><em class="fa fa-save"></em>Sauvegarder</button></A>
+      </div>
+    </div>
+
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row" >
+        <div class="col-md-12">
+					<div class="card well">
+						{% if project %}
+						<fieldset>
+							<label class="col-sm-4 data-value text-fade text-bold">Projet Code :  {{ project.code}}  </label>
+							<label for="title" class="col-sm-8 data-value text-fade text-bold"> {{ project.title|capfirst}}  </label>
+						</fieldset>
+						{%  else %}
+						<label class="col-sm-4 data-value text-fade text-bold">Projet En creation ...</label>
+
+						{%  endif %}
+
+					</div>
+          <div class="card bg-secondary text-white">
+              <div class="card-heading bg-info">
+                      <ul class="nav nav-tabs">
+                          <li class="nav-item active"><a class="nav-link text-white" href="#tab1_project" data-toggle="tab">Project |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab2_autreinfos" data-toggle="tab">Autres informations|</a></li>
+													<li class="nav-item"><a class="nav-link text-white" href="#tab3_equipe" data-toggle="tab">Equipe |</a></li>
+                          <li class="nav-item"><a class="nav-link text-white" href="#tab4_pjointe" data-toggle="tab">Pièces jointe |</a></li>
+                      </ul>
+              </div>
+          </div>
+					<!-- lancer le simulateur -->
+					<div  class="panel-body" >
+						<form action="" method="POST" id="id_formulaire_project">
+							<div class="tab-content" >
+
+									{% if form.errors %}
+								    {% for field in form %}
+								        {% for error in field.errors %}
+								            <div class="alert alert-danger">
+								                <strong>   {{ field.label_tag }} - {{ error|escape }}</strong>
+								            </div>
+								        {% endfor %}
+								    {% endfor %}
+								    {% for error in form.non_field_errors %}
+								        <div class="alert alert-danger">
+								            <strong>{{ error|escape }}</strong>
+								        </div>
+								    {% endfor %}
+								{% endif %}
+
+
+									<!-- securite formulaire CSRF -->
+							    {% csrf_token %}
+
+									<div class="tab-pane active" id="tab1_project"  >
+										{% include 'elements/edit/tab_project.html' %}
+									</div>
+
+								  <div class="tab-pane" id="tab2_autreinfos">
+										{% include 'elements/edit/tab_autre_infos.html' %}
+								  </div>
+
+									{% if project %}
+									  <div   class="tab-pane fade" id="tab3_equipe">
+											{% include 'elements/edit/tab_equipe.html' %}
+									  </div>
+									{% endif %}
+
+									{% if project %}
+										<div   class="tab-pane fade" id="tab4_pjointe">
+											{% include 'elements/edit/tab_upload.html' %}
+										</div>
+									{% endif %}
+								</div>
+						</form>
+					</div>
+
+		</div>
+   </div>
+
+
+		<!-- ------------------------------------------------------------ ------------------->
+		<!-- ----------------------------------  MODAL ------------------------------------->
+		<!-- ------------------------------------------------------------ ------------------->
+		<div id="condirm_maj" class="modal fade">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title">Confirmation</h4>
+		            </div>
+		            <div class="modal-body">
+		                <p>Voulez-vous enregistrer les modifications apportées au projet avant la fermeture?</p>
+		                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" id="quit_02" class="btn btn-primary" data-dismiss="modal">Quitter</button>
+		                <button type="button" @click.prevent="save_form_project(true)" class="btn btn-primary">Sauvegarder les modifications</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+</div><!-- fin container -->
+
+<!-- ------------------------------------------------------------ ------------------->
+<!-- ---------------------------------- COMPONENT ------------------------------------->
+<!-- ------------------------------------------------------------ ------------------->
+{% include 'elements/components/member_template.html'  %}
+
+<!-- cloturé of -->
+<!----- Modal popup confirmation -->
+<div class="modal fade" id="confirm_cloture" tabindex="-1" role="dialog" aria-labelledby="cloture " aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez la cloture de cet OF ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock main_side %}

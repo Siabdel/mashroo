@@ -1,0 +1,159 @@
+{% extends 'bi_base_home.html' %}
+{% load i18n staticfiles static %}
+
+{% block top %}
+  <section class="emerald" id="title">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>{% block title %}{% endblock %}</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        {% spaceless %}
+  						<!-- page_menu-->
+  					{% endspaceless %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+   </section>
+{% endblock %}
+
+<!--- bloc main --->
+
+{% block body %}
+<div class="container-fluid">
+
+
+  <div class="col-lg-2">
+    <ul class="list-group ">
+        <li class="list-group-item"><a  class="text-info item_one" href="{% url 'of_crud' %}" ><i class="fa fa-database" style="font-size:14px;"> </i> Query OF </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" href="{% url 'dba_query' 2%}"><i class="fa fa-database" style="font-size:14px;"> </i> Query Plan de charge </a> </li>
+        <li class="list-group-item"><a  class="text-info text-bold item_one" target="_blank" href="{% url 'dba_query' 3 %}"  ><i class="fa fa-database" style="font-size:14px;"> </i> Query Fiche de travail </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" href="{% url 'dba_query' 4 %}" ><i class="fa fa-database" style="font-size:14px;"> </i> Query Demande approvisionnment </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" href="{% url 'dba_query' 5 %}"  ><i class="fa fa-database" style="font-size:14px;"> </i> Query Commande client</a> </li>
+        <li class="list-group-item"><a  class="text-info item_one"  href="{% url 'of_logging'  %}"><i class="fa fa-exclamation-triangle" style="font-size:14px;"> </i> Console des logs </a> </li>
+
+        <li class="list-group-item"><a  class="text-info item_one" target="_blank" href="{% url 'dba_query' 6 %}"><i class="fa fa-database" style="font-size:14px;"> </i>liste des doublons OF  </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" target="_blank" href="{% url 'dba_query' 7 %}"><i class="fa fa-database" style="font-size:14px;"> </i>liste des doublons PDC </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" target="_blank" href="{% url 'dba_query' 1 %}"><i class="fa fa-database" style="font-size:14px;"> </i>Liste des ForeignKeys en base </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one" target="_blank" href="{% url 'dba_query' 9 %}"><i class="fa fa-database" style="font-size:14px;"> </i>Liste des views </a> </li>
+
+
+        <li class="list-group-item"><a  class="btn btn-info text-info item_one"   href="{% url 'dba_query' 1 %}" ><i class="fa fa-database" style="font-size:14px;"> </i> DBA Query </a> </li>
+        <li class="list-group-item"><a  class="btn btn-warning text-info" target="_blank" href="{% url 'plot_test' %}"><i class="fa fa-info" style="font-size:14px;"> </i> Volumetrie </a> </li>
+        <li class="list-group-item"><a  class="text-info item_one"  href="{% url 'dba_query' 10 %}"><i class="fa fa-info" style="font-size:14px;"> </i> Desc columns Ordre ordre_fabrication </a> </li>
+
+
+     </ul>
+  </div>
+
+    <div class="col-lg-10" >
+      <div class="row lacentrale bg-warning" style="background-image: url('{% static 'images/header_003.png' %}' no-repeat)" >  **</div>
+      <!--- bloc résultats --->
+      <section id="resultats" class="container-fluid">
+      	<div class="row">
+          {% block resultats %}{% endblock %}
+      	</div>
+      </section>
+
+    </div>
+
+
+</div>
+{% endblock %}
+
+
+<section class="wet-asphalt" id="services">
+	<div class="container">
+	{% block services %}{% endblock %}
+	</div>
+</section>
+
+<footer id="footer" class="midnight-blue">
+	<div class="container-fluid">
+		{% block footer %}{% endblock %}
+
+	 <div class="row">
+		<div class="col-sm-6">
+				Pulsar Sce theme by <a href="#">strandcosmeticseurope Developers</a>.
+		</div>
+		<div class="col-sm-6">
+				<ul class="pull-right">
+
+						<li><a id="gototop" class="gototop" href="#"><i class="icon-chevron-up"></i></a></li><!--#gototop-->
+				</ul>
+		</div>
+
+	 </div>
+	</div>
+</footer>
+
+{% block javascript %}
+
+<script type="text/javascript">
+$(document).ajaxSend(function(event, xhr, settings) {
+
+  //* see this as a html "dictionary" that is middleground between django and js, remember its a bad practice to put js in html file */
+  var csrf_token = '{{csrf_token}}' ;
+  // note POST method does not cache
+
+  $.ajaxSetup({timeout: 2000, }); // docs -- api.jquery.com/jQuery.ajaxSetup/
+
+  function sameOrigin(url) {
+      var host = document.location.host,
+          protocol = document.location.protocol,
+          sr_origin = '//' + host,
+          origin = protocol + sr_origin;
+
+      return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+          (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+          !(/^(\/\/|http:|https:).*/.test(url));
+  }
+
+  function safeMethod(method) {
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+
+  if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+      xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  }
+
+  });
+
+
+$(document).ready(function() {
+
+  $(".item_one").click( function (event){
+    // on charge son url
+    var url = $(".item_one").attr("href");
+    var url = $(event.target).attr("href");
+    console.log("url :  " + url) ;
+
+    // envoie du poste
+    //$.post( "{% url 'of_crud' %}", function(){
+    $.post(url, function(){
+        console.log("success:  " ) ;
+
+
+    })
+    .done(function( data ) {
+      console.log( "requeté envoyé: " );
+      //$(".lacentrale").fadeIn(2000);
+      $(".lacentrale").hide();
+      $(".lacentrale").html(data).fadeToggle("slow");
+      //$(".lacentrale").html('<img src="data:image/png;base64,' + data + '" />');
+
+    })
+    .fail(function(request, textStatus, error) {
+      console.log( "error " + error );
+    });
+
+    event.preventDefault();
+  });
+});
+</script>
+{% endblock %}
+</body>
+</html>

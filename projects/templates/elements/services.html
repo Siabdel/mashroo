@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h2 class="section-heading">Services</h2>
+            <h3 class="section-subheading text-muted">applications pulsar 2019</h3>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-4"><a target="_blank" href="{% url 'da_home_of' %}" class="list-group-item">
+            <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-certificate fa-stack-1x fa-inverse"></i>
+            </span></a>
+            <h4 class="service-heading">  <a target="_blank" href="http://athena:8084/gestform.dev/commande_client/charge_condt/plan_charge/of_ordre_fabrication_v2.00/of_conditionnement/"  class="list-group-item">Ordre de fabrication</h4></a>
+          <p class="text-muted">Ordre de fabrication</p>
+        </div>
+
+
+        <div class="col-md-4"><a target="_blank" href="{% url 'da_home_of' %}" class="list-group-item">
+            <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+            </span></a>
+            <h4 class="service-heading">  <a target="_blank" href="{% url 'da_home_of' %}" class="list-group-item">Liste à service / MO Cart  </h4></a>
+          <p class="text-muted">Liste à servir / demandes approvisionnement</p>
+        </div>
+
+        <div class="col-md-4"><a target="_blank" href="{% url 'fullcalendar_semaine' 'of_calendar' semaine annee 2 %}" class="list-group-item">
+            <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-calendar fa-stack-1x fa-inverse"></i>
+
+            </span> </a>
+            <h4 class="service-heading"><a target="_blank" href="{% url 'fullcalendar_semaine' 'of_calendar' semaine annee 2 %}" class="list-group-item">Planification pulsar OF semaine : {{ semaine }}</h4></a>
+            <p class="text-muted"> Planification des ofs .</p>
+        </div>
+
+        <div class="col-md-4"><a target="_blank" href="{% url 'fullcalendar_semaine' 'of_calendar' semaine annee 2 %}" class="list-group-item">
+            <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
+
+            </span> </a>
+            <h4 class="service-heading"><a target="_blank" href="http://zope:8084/gestform.com/planning/Calend_Indus_FABR_V4_as/start_rccp" class="list-group-item"> RCCP de fabrication</h4></a>
+            <p class="text-muted">  RCCP de fabrication .</p>
+        </div>
+
+
+        <div class="col-md-4"><a target="_blank" href="{% url 'project_home' %}" class="list-group-item">
+            <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+            </span>  </a>
+            <a target="_blank" href="{% url 'project_home' %}" class="list-group-item"><h4 class="service-heading">Project Sce</h4></a>
+            <p class="text-muted">Gestion de projet pulsar / todo.</p>
+        </div>
+    </div>
+</div>

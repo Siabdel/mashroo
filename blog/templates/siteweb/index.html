@@ -1,0 +1,91 @@
+{% extends 'base_home.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block template_vuejs %}
+{% endblock %}
+
+ {% block main %}
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welcome To Atlasoft !</div>
+                <div class="intro-heading">Bienvenue chez Atlasoft </div>
+                <a href="#services" class="page-scroll btn btn-danger btn-lg my-btn-xl">_________________</a>
+            </div>
+        </div>
+      
+    </header>
+
+    <!-- Services Section -->
+
+    <section id="services">
+      {% if user.is_superuser %}
+        {% include 'elements/admin_services.html' %}
+      {% else %}
+        {% include 'elements/services.html' %}
+      {% endif %}
+
+        <br><br> <hr>
+    </section>
+
+
+    {% block portfolio %}
+    <!-- Portfolio Modal 1 -->
+    <!-- Portfolio Grid Section -->
+    <section id="portfolio" class="bg-light-gray">
+    	 {% include 'elements/portfolio.html' %}
+    </section>
+
+    {% endblock %}
+
+    <!-- Team Section -->
+    <section id="team" class="bg-light-gray">
+         {% include 'elements/equipe.html' %}
+    </section>
+
+    <!-- Clients Aside -->
+    <aside class="clients">
+           {% include 'elements/clients.html' %}
+    </aside>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" >
+       {% include 'elements/contacte.html' %}
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; strandcosmeticseurope.com 2020</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="#">CGI</a>
+                        </li>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Use the modals below to showcase details about your portfolio projects! -->
+
+
+{% endblock %}

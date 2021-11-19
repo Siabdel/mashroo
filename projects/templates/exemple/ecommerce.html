@@ -1,0 +1,69 @@
+{% extends "base_projects.html" %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block left_side %}
+  {% include 'elements/pro_left_menu.html' %}
+{% endblock   %}
+
+{% block right_side %}
+{% endblock   %}
+
+
+{% block extra_head %}
+  <link rel='stylesheet' href='{% static "css/todo_style.css" %}' />
+{% endblock  %}
+
+
+
+{% block extra_js %}
+    <!-- <script src="{% static 'vuejs/todo/vue.min.js' %}"></script> -->
+    <script src="{% static 'vuejs/vue_2.5.16.js' %}"></script>
+    <script src="{% static 'vuejs/todo/app3.js' %}"></script>
+    <script>
+      var vm = Vue({
+        el : "app",
+        template : '#ecommerce_template',
+        data : {
+            user : 'Abdel',
+            'produits' : ["pizza", "Chich-Cababe", "Tacos", "Humberger", "sandwitch"]
+        }
+      })
+    </script>
+{% endblock  %}
+
+
+
+{% block main_side %}
+  <h1> Ici composant ecommerce</h1>
+  <div  id="app">
+    <componentodo :user_id=2 > </componentodo>
+  </div>
+
+
+{% endblock  %}
+
+
+{% block template_vuejs %}
+<template id="ecommerce_template">
+    <!-- <style>[v-cloak] { display: none; }</style> -->
+    <div class="container">
+      			<div class="row">
+      				<div class="jambotron">
+      				<h3>vous ête connecté en tant que user {{ user}}</h3>
+      				</div>
+      			</div>
+
+      			<h1 class="display-4"> Nos produits</h1>
+
+      			<div class="row">
+      				<div class="col-3" v-for="produit in products">
+      				    <p class="jumbotron">  {{ produit }}   </p>
+
+      				</div>
+      			</div>
+    </div>
+</template>
+
+<!-- Delete ".min" for console warnings in development -->
+{% endblock  %}

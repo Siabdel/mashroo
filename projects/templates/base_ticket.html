@@ -1,0 +1,35 @@
+{% extends "base_projects.html" %}
+{% load i18n static %}
+{% load details %}
+
+{% block meta_title %}{{ object|striptags|capfirst }}{% endblock %}
+
+
+{% block left_side %}
+	{% include 'elements/pro_left_menu.html' %}
+{% endblock left_side %}
+
+
+{% block extra_js %}
+	<!-- VUEJS  -->
+	<script src="{% static 'vuejs/vue.min.js' %}"></script>
+	<script src="{% static 'vuejs/projects/app.js' %}" defer></script>
+	<!-- VUEJS  -->
+{% endblock %}
+
+
+<!-- template -->
+{% block template_vuejs  %}
+  {% include 'elements/components/actions_template.html'  %}
+{% endblock %}
+
+
+{% block right_side %}
+	{% include 'elements/pro_right_menu.html' %}
+{% endblock %}
+
+
+{% block search %}    {% endblock %}
+
+
+{% block content %} {% endblock %}

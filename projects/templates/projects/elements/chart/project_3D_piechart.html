@@ -1,0 +1,64 @@
+{% extends 'base_businessce.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+	{% block right_side %}
+	  {% include 'elements/pro_right_menu.html' %}
+	{% endblock right_side %}
+
+	{% block extra_js %}
+		<!-- VUEJS  -->
+		<link rel="stylesheet" href="{% static 'chart3D/css/style.css' %}">
+	<!--<script src="https://www.amcharts.com/lib/3/amcharts.js"></script> -->
+	<!--<script src="https://www.amcharts.com/lib/3/serial.js"></script> -->
+	<script src="{% static 'chart3D/js/amcharts.js' %}"></script>
+	<script src="{% static 'chart3D/js/serial.js' %}"></script>
+	<script src="{% static 'chart3D/js/pie.js' %}"></script>
+	<script src="{% static 'chart3D/js/my_3Dpiechart_data.js' %}"></script>
+  {% endblock %}
+
+{% block main_side %}
+
+	<h3> STRAND</h3>
+	<h5>Pie Chart mes actions encours</h5>
+<div class="container">
+
+	<div class="col-lg-11">
+		<div id="chartdiv">.</div>
+	</div>
+
+	<div class="col-lg-1">
+		<div id="id_chartdiv">.</div>
+	</div>
+
+</div>
+
+
+	<script type="text/javascript">
+		// go ...
+		var data = [];
+
+		$(document).ready(function() {
+				// load data
+				var api_url = `/pro/api/get_project_ticket_stat3D/78/`;
+				//var jsonData3 = '{"data": [{"status": "nouveau", "color": "#FF0F00", "taches": 2}, {"status": "nouveau", "color": "#FF0F00", "taches": 2}]}';
+				// go ...
+				jsonData = loadDataPieChart3D(api_url);
+				// print chart
+				printPieChart3D('chartdiv',	jsonData.data);
+				//------------
+				// Camanbert
+				//-----------
+
+				//jsonData = loadDataChart3D(api_url);
+				// print chart
+				//printChart3D('id_chartdiv',	jsonData.data);
+
+		});
+	</script>
+
+{% endblock %}

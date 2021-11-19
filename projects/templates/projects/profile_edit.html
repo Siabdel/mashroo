@@ -1,0 +1,214 @@
+{% extends 'base_detail.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+
+	{% block left_side %}
+    {% include 'elements/pro_left_menu.html' %}
+  {% endblock left_side %}
+
+
+	{% block right_side %}
+  <div class="row"> </div>
+  {% endblock %}
+
+{% block main_side %}
+
+<div class="container-fluid" id="app_config">
+    <HR>
+    <div class="card bg-warning text-white col-md-12">
+      <div class="card-heading">
+        <A href="print_of?code_of=<dtml-var code_of>"  target="_blank" >
+        <A href='#'   onclick="history.go(-1);" class="btn btn-success"><em class="fa fa-close"></em>Annuler</button></A>
+      </div>
+    </div>
+
+      <!--- row produit à consommer ---->
+      <HR>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card bg-secondary text-white">
+              <div class="card-heading  text-white" style="background-color:'#CCE'">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item active"><a class="nav-link text-white" href="#tab1primary" data-toggle="tab">Profile|</a></li>
+                      <li class="nav-item"><a class="nav-link text-white" href="#tab2config" data-toggle="tab">configuration groupe/services|</a></li>
+                      <li class="nav-item"><a class="nav-link disabled text-white" href="#tab4documents" data-toggle="tab">Documents</a></li>
+                  </ul>
+              </div>
+          </div>
+          <!-- Panel multi anglaits -->
+          <div class="panel-body">
+            <div class="tab-content">
+							<!-- detail project -->
+              <div class="tab-pane active text-bold col-lg-12" id="tab1primary">
+
+									<div class="col-lg-4">
+											{% if object.photo %}
+												<img src="/static/media/{{ object.photo }}"    width="250"  height="250"/></p>
+											{% else %}
+												<img src="/static/images/avatar_default.png"   width="250"  height="250"/></p>
+											{% endif %}
+									</div>
+
+									<div class="col-lg-8">
+										<form action="" method="POST" enctype="multipart/form-data" >
+											<div class="row" >
+												{{ form.non_field_errors }}
+												{%  for field in form %}
+												{% if field.errors  %}
+													{{ field.label_tag }} - {{ field.errors }} -
+												{%  endif %}
+												{% endfor %}
+												{% csrf_token %}
+
+												<ul class="list-unstyled list-group" >
+
+													{% if  object.user.username   %}
+													<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Login : </span>
+														<span class="badge badge-secondary"> <h5>{{ object.user.username }}</h5>  </span> <br>
+
+
+														<span class="col-md-offset-1">Crée le : {{ object.user.date_joined |date:"D d M Y" }} {{object.user.date_joined|time:"H:i" }}</span>
+													 </li> <br>
+														{% endif %}
+
+														{% if  object.user.email %}
+															<li class="list-item text-info">
+																<span class="col-md-3 col-md-offset-1">Email :</span>
+																<span> <button type="button" onclick="$('#id_email').toggle();">  </span>   {{ object.user.email}} </button></span>
+																<span id="id_email" style="display:none" >{{ form.email }} </span>
+															</li><br>
+														{% endif %}
+
+													{% if form.fonction %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Fonction : </span>  {{ form.fonction }}    </li><br>
+														{% endif %}
+
+													{% if form.service %}
+														<li class="list-item text-info">
+															<span class="col-md-3 col-md-offset-1">Societé </span>
+															<span> <button type="button" onclick="$('#id_edit_societe').toggle();">{{ object.service.societe.name }} </button></span>
+															<input type="hidden" name="societe_selected" id="id_societe_selected" value="{{ object.service.societe.id }}">
+															<span id="id_edit_societe" style="display:none" >
+
+																<select v-model="societeSelected" @change="load_service" name="societe" id="id_societe"  class="input-lg">
+																	<option v-for="societe in societes"
+																		:value="societe.id"
+																		:selected="societe.id === societeSelected" >
+																		[[ societe.name ]]
+																	</option>
+																</select>
+															</span>
+														</li>
+														<br>
+
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Service </span>
+															<span> <button type="button" onclick="$('#id_edit_service').toggle();">{{ object.service.name }} </button></span>
+															<input type="hidden" name="service_selected" id="id_service_selected" value="{{ object.service.id }}">
+															<span id="id_edit_service" style="display:none" >
+																<select v-model="serviceSelected" class="input-lg" name="service" id="id_service">
+																  <option v-for="option in services"
+																		:value="option.id"
+																		:selected="option.id === serviceSelected" >
+																    [[ option.name ]]
+																  </option>
+																</select>
+															</span>
+														 </li><br>
+													{% endif %}
+
+													{% if user.is_superuser %}
+											   		<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Role: </span> 			{{ form.role }} </li><br>
+														{% else %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Role: </span>
+															<select name="role" id="id_role" class="input-lg" aria-readonly="true" readonly>
+																<option value="3" selected="selected">Utilisateur</option></select>
+														</li><br>
+			 											<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Role: </span> 			{{ object.role.name }} </li><br>
+													{% endif %}
+
+													{% if form.timezone %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Fuseau horaire: </span> 	{{ form.timezone }} </li><br>
+													{% endif %}
+
+													{%  if  form.user.email %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Email :     {{ form.user.email }}    </span> </li><br>
+													{% endif %}
+
+
+													{%  if form.fonction %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">Language :  {{ form.language }}    </span> </li><br>
+													{% endif %}
+
+													{%  if object.photo %}
+														<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">photo:  {{ object.photo }}  </span>
+														<span>{{ form.del_photo }}</span>  </li> <br>
+
+													{% else %}
+													<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">photo:
+														<span> {{ form.photo }} </span>
+													 </li>
+														<br>
+													{% endif %}
+
+													<li class="list-item text-info"> <span class="col-md-3 col-md-offset-1">
+														<input type="submit" class="btn btn-warning btn-md" value="Enregistrer">
+													</li>
+
+												</ul>
+												</div>
+											</form>
+									</div>
+              	</div>
+
+							<!-- Ajout action -->
+              <div class="tab-pane" id="tab2config">
+								<legend> Groupe MsBeautilab  :  </legend>
+								{% include 'elements/show/config_groupe.html' %}
+              </div>
+
+              <div class="tab-pane fade" id="tab3members">
+              </div>
+
+              <div class="tab-pane fade" id="tab4documents">
+							</div>
+
+            </div>
+          </div>
+  </div>
+</div>
+
+</div><!-- fin container -->
+
+{% endblock main_side %}
+
+{% block extra_js %}
+	<!-- VUEJS  -->
+	<script src="{% static 'vuejs/vue.min.js' %}"></script>
+	<script src="{% static 'vuejs/projects/app_config.js' %}"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	// ------------------------------------------------------
+	//-- si societe change on recharge les services
+	//----------------------------------------------------
+		$("#id_societe__").change(function(event) {
+			var user_id = '{{ user.id }}';
+			var societe_selected = true;
+			var societe_selectionnee = $("#id_societe").val();
+			//console.log("url= societe_selectionne  ** =" +  societe_selectionnee);
+			// vm.current_societe = societe_selectionnee;
+
+			url = "/pro/profile/XXXX/edit/" ;
+			url = url.replace(/XXXX/, user_id);
+			//alert(" je selectionne !" + semaine );
+			location.href = url;
+			location.replace(url)
+			//window.location.reload(false);
+		});
+	});
+</script>
+
+	<!-- VUEJS  -->
+{% endblock %}

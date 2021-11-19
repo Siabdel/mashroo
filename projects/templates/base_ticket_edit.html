@@ -1,0 +1,58 @@
+{% extends "base_projects.html" %}
+{% load i18n static staticfiles %}
+
+
+{% block forms_errors %}
+ 			{% if form.errors %}
+		    {% for field in form %}
+		        {% for error in field.errors %}
+		            <div class="alert alert-danger">
+		                <strong>   {{ field.label_tag }} - {{ error|escape }}</strong>
+		            </div>
+		        {% endfor %}
+		    {% endfor %}
+		    {% for error in form.non_field_errors %}
+		        <div class="alert alert-danger">
+		            <strong>{{ error|escape }}</strong>
+		        </div>
+		    {% endfor %}
+		{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+ <!-- VUEJS  -->
+ <script type="text/javascript">
+   var project_id = '{{ project_id }}';
+ </script>
+
+ <script src="{% static 'vuejs/vue.min.js' %}"></script>
+ <script src="{% static 'vuejs/projects/edit_project_vue.js' %}"></script>
+
+
+  <script type="text/javascript">
+ 	$(document).ready(function(){
+     // fenetre modal Confirmation
+
+   // confirmer la cloture d'of
+   // afficher popup avec barre progress wait
+   $('#confirm_DA').on('show.bs.modal', function(e) {
+       // on affiche barre progress si ok est saisir
+       $("#id_ok_wait").click(function(event){
+         $("#id_br_wait").show();
+       });
+
+       $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+   });
+
+   // afficher popup sans barre progress wait
+   $('#confirm_cloture, #confirm_start').on('show.bs.modal', function(e) {
+       $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+   });
+
+
+ });// fin document ready
+
+ </script>
+ <!-- VUEJS  -->
+{% endblock %}

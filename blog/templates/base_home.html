@@ -1,0 +1,57 @@
+{% extends "base_siteweb.html" %}
+{% load i18n static staticfiles %}
+
+{% block extra_js %}
+ <!-- VUEJS  -->
+ <!-- jQuery -->
+	<!-- Bootstrap Core JavaScript -->
+<!-- Plugin JavaScript -->
+ <script src="{% static 'js/agency/jquery.easing.min.js' %}"></script>
+ <script src="{% static 'js/agency/jquery.fittext.js' %}"></script>
+ <!-- Plugin JavaScript -->
+
+ <script src="{% static 'js/agency/jqBootstrapValidation.js' %}"></script>
+ <script src="{% static 'js/agency/contact_me.js' %}"></script>
+
+ <!-- Custom Theme JavaScript -->
+ <script src="{% static 'js/agency/agency.js' %}"></script>
+
+ <!-- VUEJS  -->
+ <!-- VUEJS  -->
+ <script src="{% static 'vuejs/vue_2.5.16.js' %}"></script>
+ <script src="{% static 'vuejs/projects/app_index.js' %}" defer></script>
+{% endblock %}
+
+
+{% block style_home %}
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="{% static 'css/agency/agency.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/agency/my_style.css' %}" type="text/css">
+{% endblock %}
+
+{% block extra_head %}
+<!-- Bootstrap Core CSS -->
+<!-- Custom CSS -->
+
+<!-- Custom Fonts -->
+<link href="{% static 'css/fonts/font-awesome/css/font-awesome.css'  rel='stylesheet' %}" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+
+<!-- Plugin CSS -->
+<link rel="stylesheet" href="{% static 'css/agency/animate.min.css' %}" type="text/css">
+
+{% endblock %}
+
+{% block head_jumbotron %} {% endblock %}
+
+{% block menu_head  %}
+    <li> <a class="page-scroll" href="#services">Services</a> </li>
+    <li> <a class="page-scroll" href="#portfolio">Portfolio</a> </li>
+  <!--  <li> <a class="page-scroll" href="#about">Apropos</a> </li> -->
+    <li> <a class="page-scroll" href="#team">Notre equipe</a> </li>
+    <li> <a class="page-scroll" href="#contact">Nous Contactez</a> </li>
+ {% endblock %}

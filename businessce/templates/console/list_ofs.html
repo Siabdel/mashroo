@@ -1,0 +1,130 @@
+{% load i18n staticfiles static %}
+
+
+  {% block main_side %}
+
+<div class="container-fluid">
+<div class="jumbotron">
+  <div class="card-heading row">
+        <div class="col-lg-10">
+				<p> <h3>Demande approvisionnment de l'année 20{{annee}} machine: {{code_machine}}</h3>  </p>
+
+					{% include 'search.html' %}
+				</div>
+
+				<div class="col-lg-2">
+          <span id="id_content_msg" class="text-warning">  </span>
+
+          <A href="/of/cartlist/listitem/" >
+            <img class="pull-left " src="" height="42" width="62" />
+          </A>
+        </div>
+  </div>
+</div>
+
+ <hr>
+
+<!--> boucle de creation des of a partir des commandes du plan de charge <dtml-call create_auto_of ></!-->
+<div class="row">
+  <table class="table table-striped">
+    <form id="form_check_grouper" action="" >
+      <thead class="thead thead-inverse">
+        <tr>
+          <th> <input type="checkbox"  class="btn btn-large" onclick="checkAll(event);" name='super' id="id_checkAll"/>Check all </th>
+          <th>Référence OF</th>  <th>Details OF</th>
+          <th class="text-center" colspan=3><em class="fa fa-cogs fa-lg">Action</em></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- definition des variables --->
+        {% for of in object_list %}
+        <tr class="list-unstyled">
+            <td> __<input type="checkbox" name="articles.coche:records"  class="form-check-input" /> </td>
+            <td>
+                  <img src="/static/images/cosmetics_00{{range}}.jpeg"   width=144 />
+            </td>
+
+            <td>
+
+              <li>
+                <h3 class="text-info"> {{ of.article }} </h3>
+              </li>
+
+              <li> <label class="" for="code_of"> Code of  :</label>
+                <span class="text-info"> {{ of.code_of }} </span>
+                <small>{{ of.date_debut_reelle }} </<small>
+              </li>
+
+              <li> <label class="" for="quantite prévue">Numero de Commande  :</label>
+                <span class="text-info"> {{ of.commande }} </span>
+              </li>
+
+              <li> <label class="" for="quantite prévue">Client  :</label>
+                <span class="text-info">{{ of.client.nomclie }}</span>
+              </li>
+
+              <li>  <label class="col-sm-2" for="quantite prévue">quantite prévue </label> :
+                    <span class="col-sm-4  text-danger">
+                          <input type="text" class="form-control" name="quantite_prevue"  value="{{ of.quantite_prevue }}" />
+                    </span>
+              </li>
+            </td>
+
+            <td> <A id="id_ajouter_of"  onclick="add_item_of( '{{ of.code_of  }}')" class="btn btn-lg btn-warning" > Ajouter</A> </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </form>
+
+  </table>
+</div>
+<!-- PAGINATION -->
+
+</div>
+
+<!----- Modal popup confirmation -->
+<div class="modal fade" id="genere-of" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez la génération automatique des OF **?
+                  <!-- Barre de progression -->
+                  <p   class="text-warning clss_br_wait" style="display:none"><img src="barre_progress" width="250px" height="50">  </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a  class="btn btn-danger btn-ok clss_ok_genere">Ok</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!----- Modal popup confirmation -->
+<div class="modal fade" id="confirm-cloture" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmation
+            </div>
+            <div class="modal-body">
+                Vous confirmmez la cloture de cette OF ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Quitter</button>
+                <a class="btn btn-danger btn-ok">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{% endblock %}

@@ -1,0 +1,18 @@
+  <ul  class="">
+    {% for societe in societes %}
+        <li class="list-group-item text-info"> <button type="button" onclick="$('#id_service_list_{{ societe.id }}').toggle();" > {{ societe.name }} </button>
+          <ul id="id_service_list_{{ societe.id  }}" style="display:none">
+            {% for service in societe.service_set.all %}
+              <li>{{ service.name }} </li>
+              {% endfor %}
+          </ul>
+        </li>
+        {% if societe.children.exists %}
+           {% with societe.children.all as societes %}
+           <li>
+             {% include 'elements/show/config_groupe.html' %}
+           </li>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+  </ul>

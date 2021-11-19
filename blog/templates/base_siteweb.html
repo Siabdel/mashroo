@@ -1,0 +1,232 @@
+{% load i18n static staticfiles %}
+<!doctype html>
+<html lang='fr'>
+
+<head>
+	   <meta charset="UTF-8">
+     <title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
+     <!-- BOOTSTRAP -->
+
+		  <!------CSS------>
+		 	<link rel='stylesheet' href="{% static 'bootstrap/dist-3.3.5/css/bootstrap_as.css' %}"  media="screen" />
+			<!------	<link rel='stylesheet' href="{% static 'bootstrap/dist-4.1.1/css/bootstrap.css' %}"  media="screen" />------>
+		  <link rel='stylesheet' href="{% static 'bootstrap/dist-3.3.5/css/bootstrap-datepicker.css' %}"  media="screen" />
+		  <link rel='stylesheet' href="{% static 'jquery/css/popup.css' %}"  >
+		  <link rel='stylesheet' href="{% static 'jquery/css/jquery-ui.css' %}"  >
+			<link rel='stylesheet' href="{% static 'css/style_vuejs.css' %}"  >
+
+			{% block style_home %}
+		  	<link rel='stylesheet' href="{% static 'css/style_home.css' %}"  >
+			 {% endblock %}
+
+		  <!------ JS ---------->
+		  <script src="{% static 'js/moment-2.10.3.js' %}" ></script>
+		  <script src="{% static 'jquery/js/jquery-v3.3.1.min.js' %}" ></script>
+			<script src="{% static 'jquery/js/jquery.popup.js' %}"></script>
+
+		  <script src="{%  static 'jquery/js/jquery-v3.3.1.min.js' %}" ></script>
+			<script src="{% static 	'bootstrap/dist-3.3.5/js/bootstrap.js' %}"></script>
+		  <script src="{% static  'bootstrap/dist-3.3.5/js/bootstrap-datepicker.js' %}"></script>
+
+		  <!-------------------->
+
+			<script src="{% static 'js/locale/local_script.js' %}"></script>
+
+		 <!-------------------->
+		 <!-- FullCalendar  --->
+		 <!-------------------->
+		 <!------ CSS ------>
+		 <link  href="{% static 'fullcalendar/dist-v3.9.0/scheduler-v1.9.4.css' %}" rel="stylesheet"  >
+		 <link  href="{% static 'fullcalendar/dist-v3.9.0/fullcalendar.css' %}" rel="stylesheet"  >
+		 <link  href="{% static 'fullcalendar/dist-v3.9.0/fullcalendar.print.min.css' %}" rel="stylesheet"  media="print" >
+		 <script src="{% static 'fullcalendar/dist-v3.9.0/fullcalendar.js' %}"></script>
+		 <script src="{% static 'fullcalendar/dist-v3.9.0/scheduler-1.9.4.js' %}"></script>
+		 <script src="{% static 'fullcalendar/dist-v3.9.0/locale/fr.js' %}"></script>
+
+		 <!-- font-awesome -->
+		 <!--<link rel="stylesheet" href="{% static 'schedue.css' %}" type="text/css" media="screen" />-->
+		 <link rel="stylesheet" href="{% static 'css/fonts/font-awesome/css/font-awesome.css' %}" type="text/css">
+
+     {% block extra_head %}
+
+     {% endblock %}
+</head>
+
+<body>
+<div class="page">
+	<header>
+		<div class="row">
+			{% if messages %}
+			<ul id="messages">
+					{% for message in messages %}
+					<li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
+					{% endfor %}
+			</ul>
+			{% endif %}
+			<!-- Message Modal -->
+			<div class='modal fade' id='myModal' role='dialog'>
+				<div class='modal-dialog'>
+					<!-- Modal content-->
+					<div class='modal-content'>
+						<div class='modal-header'>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+							<h4 class='modal-title'>Messages</h4>
+						</div>
+						<div class='modal-body'>
+							<p id="id_content_msg"> </p>
+						</div>
+						<div class='modal-footer'>
+							<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<nav class="navbar navbar navbar-fixed-top container-fluid  entete_sce_004" role="banner">
+			<!-- <img class="img-circle nav navbar-nav navbar-inverse navbar-right" src="{% static 'images/cosmetics_006.jpg'  %}"  width="180" height="80" /> -->
+
+			<div class="container-fluid">
+				<div class="navbar-header page-scroll">
+
+				    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				    </button>
+					    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }} </a>{% endif %}
+							{% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+								<span class="entete_sce_004__"></span>
+								<a class="navbar-brand" href="#page-top"> <span ></span>Pulsar Project Sce</a>
+
+
+				</div>
+			  	<div class="collapse navbar-collapse container">
+			     <!-- page_menu "pages/menus/dropdown.html" -->
+			       <!-- Collect the nav links, forms, and other content for toggling -->
+						<ul class="nav navbar-nav navbar-inverse navbar-right">
+							<li class="hidden">	<a href="#page-top"></a></li>
+							<li class="hidden"><a href="/admin">Administrateur</a></li>
+							<li ><a class="text-bold text-warning" href="/">Accueil</a></li>
+								{% block menu_head  %}
+								<!-- autre menu de la page accueil -->
+								{% endblock  %}
+							<li class="dropdown">
+								<a href='#' class="dropdown-toggle  text-bold text-warning" data-toggle="dropdown"> Mon compte <b class='caret'></b></a>
+								<ul class="dropdown-menu">
+									<li class='active'>
+										{% if user.is_authenticated %}
+											<a class="page-scroll" href="/account/logout"><b>Se déconnecter</b></a>
+											{% else %}
+												<li class='text-center-xs active'><a href="/account/login">Se connecter a Pulsar</a></li>
+										{% endif %}
+									</li>
+								</ul>
+							</li>
+
+							<li class="pull-left">
+								{% if user.is_authenticated %}
+									<small class='text-bold text-muted text-left-xs '> Bonjour Mr(Mme) <br>  {{ user.first_name }} {{ user.last_name}} </small>
+								{% endif %}
+							</li>
+						</ul>
+			  </div>
+			</div>
+		</nav><!--/header-->
+
+	<h5> -- </h5> <hr>
+
+	<main class="main container-fluid">
+
+		{% block head_jumbotron  %}
+		<div class='row'>
+			<div class="col-lg-12">
+				<div  id="demo" class="row jumbotron entete_sce_002 text-center" >
+						{% block jumbotron_center %}
+						<div class="col-md-4"> </div>
+						<div class="col-md-4 col-offset-md-12">
+								<h3 class="push-left"> <img class="img-rounded" src="{% static 'images/theproject_03.jpeg'  %}"  width="280" height="60" /> <i> PULSAR  SCE projects </i>  </h3>
+						</div>
+						<div class="col-md-4 col-offset-md-12"> </div>
+						{% endblock %}
+				</div>
+			</div>
+		</div>
+		{% endblock %}
+
+		<section>
+			<div class="row">
+				<div class="container-fluid">
+					{% block title %}{% endblock %}
+
+					{% block main %}
+					<div class="row">
+						<!-- left side -->
+						<div class="col-lg-1">
+								{% block left_side %}
+								  <h5>Column 1</h5>
+								{% endblock %}
+						</div>
+						<!-- center side -->
+						<div class="col-lg-10 bg-as-001 ">
+							{% block main_side %}
+
+								{% block jumbotron %}
+
+								<div class="jumbotron">
+									<div class="card-heading row">
+												<div class="col-lg-offset-1 col-lg-3">
+													<div class="row">
+														<div  class="col-sm-6">
+															<span id="id_content_msg" class="">  </span>
+															<A href="/da/cart/listitem/" >
+																<img class="pull-left " src="{% static 'images/project_room.jpeg' %}" height="182" width="300" />
+															</A>
+														</div>
+														<div class="col-sm-6">
+														<span class="label-primary badge badge-secondary" style="display: none;">{{ object_list.count}} </span>
+														</div>
+													</div>
+													<HR>
+												</div>
+										</div>
+									</div>
+
+								{% endblock %}
+
+							  <h5>PULSAR SCE projects</h5>
+							{% endblock %}
+						</div>
+
+						<!-- right side -->
+						<div class="col-lg-1">
+								{% block right_side %}
+								  <h5>PULSAR SCE projects</h5>
+								{% endblock %}
+						</div>
+					</div>
+					{% endblock %}
+
+					{% block template_vuejs %}
+					{% endblock %}
+
+				</div>
+			</div>
+		</section>
+
+
+	</main>
+
+	{% block extra_js %}
+	{% endblock %}
+
+
+	{% block extra_style %}
+	{% endblock %}
+
+  <footer id="footer">{% block footer %}{% endblock %} </footer>
+</div>
+	</body>
+</html>

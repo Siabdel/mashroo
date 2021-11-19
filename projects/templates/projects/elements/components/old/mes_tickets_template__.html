@@ -1,0 +1,89 @@
+<!-- template for the modal component -->
+<template  id="mes_tickets_template">
+    <div class="container-fluid">
+      <div class="form-group">
+        <input class="form-control col-sm-2" type="text" v-model="cle"  @input="api_filter_tickets(cle)"  @change.prevent="api_filter_tickets(cle)" value="ok" placeholder="Saisir nom du membre">
+      </div>
+      <button v-show="false" type="button" class="btn btn-success"  v-on:click.prevent="tickets_disponible" > Tout le monde </button>
+
+      <table class="table table-striped" >
+        <thead class="thead thead-inverse"> <small class="text-muted"> </small>
+
+        <th>Select</th>
+        <th>status</th>
+        <th><a @click="sortBy='id'"> Identifiant</a> </th>
+        <th>categorie</th>
+        <th><a @click="sortBy='id'"> Sequence</a> </th>
+
+        <th><a @click="sortBy='title'"> titre</a> </th>
+        <th><a @click="sortBy='author'"> Auteur </a> </th>
+        <th><a @click="sortBy='assignee'"> Assigné à </a> </th>
+        <th>date écheance</th>
+        <th>date de réalisation</th>
+
+        <th>urgence</th>
+        <th class="text-center" colspan="3">Actions</th>
+
+        </thead>
+            <tr class="text-center" v-for="(elem, index) in donnees"  :key="index">
+              <td>
+                <input type="checkbox"  v-bind:checked="checked" v-on:change="selectTicket( $event.target.checked, elem.id, key)" class="form-check-input" />
+              </td>
+
+              <td v-bind:class="{
+                  'badge badge-warning'  : elem.status ==='NOUVEAU' | elem.status=='NEW',
+                  'badge badge-encours' : elem.status === 'ENCOURS',
+                  'badge badge-info  block'     : elem.status === 'ENATTENTE',
+                  'badge badge-success  block' :  elem.status === 'TERMINEE'| elem.status=='CLOTUREE', }" >  [[ elem.status]] </td>
+
+              <td>  
+                <a href="#" v-bind:title='task.project.title' > [[ task.project.code  ]]  </a>
+              </td>
+              <td> [[ elem.id  ]] </td>
+              <td v-format="''" v-if="elem.category"> [[ elem.category.title  ]] </td>
+              <td> [[ elem.sequence ]] </td>
+
+              <td class="text-left"> [[ elem.title | substr(100) ]] </td>
+
+              <td v-if="elem.author" > [[ elem.author]] </td>
+              <td v-if="elem.assignee"> [[ elem.assignee.first_name ]] [[ elem.assignee.last_name ]]</td>
+              <td v-else> ---</td>
+
+              <td v-if="elem.due_date"> [[ elem.due_date | formatDate]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="elem.schedule_date" > [[ elem.schedule_date  | formatDate]] </td>
+              <td v-else> ---</td>
+
+              <td v-if="elem.delai_due_date" > [[ elem.delai_due_date  | formatDate]] </td>
+              <td v-else> ---</td>
+
+
+              <td v-bind:class="{
+                'badge badge-warning'  : elem.urgency ==='IMPORTANT',
+                'badge badge-danger' :   elem.urgency === 'URGENT'| elem.urgency === 'CRITIQUE',
+                'badge badge-success' :  elem.urgency ==='MOYEN' | elem.urgency === 'FAIBLE', }" > [[ elem.urgency]]  </td>
+
+    					<td> <A  :href="url_ticket_edit(elem.id)"  data-toggle="tooltip"  title="Voir Détails" class="btn btn-lg btn-secondary" >
+                <em class="fa fa-eye"></em></A>
+
+              <A  :href="url_ticket_show(elem.id)"  data-toggle="tooltip"  title="Modifier Ticket" class="btn btn-lg btn-secondary" >
+                  <em class="fa fa-pencil"></em></A>
+
+    				 <A v-show="true" :href="url_delete_ticket" data-toggle="tooltip" @click.prevent="emit_open_modal_confirm(elem.pk)"
+                 title="Suppression de l'action"
+                	v-bind:class="{
+                    'btn btn-lg btn-secondary' : elem.created_by!=1,
+    								'btn btn-lg btn-info  btn-block' : elem.created_by==1,}" >
+                  <em  class="fa fa-trash"></em></A
+                </td>
+            </tr>
+      </table>
+
+      <div v-show="donnees.length > 4" class="row"  >
+        <button class='btn-warning' @click.prevent="prevPage">Précedent</button>
+        <button class='btn-warning' @click.prevent="nextPage">Suivant</button>
+      </div>
+    </div>
+
+</template>

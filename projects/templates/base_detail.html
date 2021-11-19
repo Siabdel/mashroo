@@ -1,0 +1,29 @@
+{% extends "base_projects.html" %}
+
+{% load i18n static %}
+{% load details %}
+
+{% block meta_title %}{{ object|striptags|capfirst }}{% endblock %}
+
+
+	{% block extra_js %}
+	<!-- VUEJS  -->
+	<script src="{% static 'vuejs/vue_2.5.16.js' %}"></script>
+	<script src="{% static 'vuejs/projects/app_tickets.js' %}" defer></script>
+	<!-- VUEJS  -->
+	{% endblock %}
+
+
+<!-- template -->
+{% block template_vuejs  %}
+  {% include 'elements/components/tickets_admin_template.html'  %}
+{% endblock %}
+
+
+{% block search %}    {% endblock %}
+
+
+{% block main_side %}
+
+
+{% endblock %}

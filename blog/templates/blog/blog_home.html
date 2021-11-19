@@ -1,0 +1,55 @@
+{% extends  'base_clean_blog.html'  %}
+{% load  staticfiles   %}
+{% load markdownify %}
+{% load markdown_filter %}
+ {% load markdownas %}
+
+
+{%  block main_content   %}
+<hr>
+<br>
+<ul class="nav navtab">
+  <li class="nav-item"><a class="nav-link active" href="{% url 'article_home' 'informatique' %}">Informatique</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'article_home' 'systeme' %}">Système</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'article_home' 'base-donnee' %}">Base de données</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'article_home' 'sciences' %}">Sciences</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'article_home' 'economie' %}">Economie</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'article_home' 'droit' %}">Droit</a></li>
+</ul>
+
+<br>
+<div class="container-fluid">
+
+  {% for article in object_list  %}
+    <div class="row">
+        <div class="col-lg-4 col-md-12">
+         {{ article.documents.get_documents_article }}
+          <img src="/media/{{ article.category.photo.document }}" alt="photo {{ article.category }}"  width="400px">
+        </div>
+
+        <div class="col-lg-8 col-md-12 mx-auto">
+          <div class="post-preview">
+              <a href="{% url 'article_details' article.pk %}">
+              <h2 class="post-title">
+                {{article.name}}
+              </h2>
+              <h3 class="post-subtitle">
+                   {{ article.recap  |truncatechars:200 | lower| markdownas | safe  }}
+              </h3>
+              </a>
+              <p class="post-meta">Posté par
+              <a href="{% url 'article_home' 'systeme' %}">{{ user.username}} {{ user.firstname}}</a>
+              le {{ article.created | date:'d M Y' }}</p>
+          </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+    <hr>
+    <!-- Pager -->
+    <div class="clearfix">
+      <a class="btn btn-primary float-right" href="{% url 'article_home' 'systeme' %}">Older Posts &rarr;</a>
+    </div>
+</div>
+{% endblock %}

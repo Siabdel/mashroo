@@ -1,0 +1,138 @@
+{% extends 'timeline_base.html' %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block main_side %}
+<div class="container">
+	<div class="panel with-nav-tabs panel-primary">
+		<div class="panel-heading"></div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<p class="bd-info text-center"> 2020 </p>
+				</div>
+			</div>
+		</div>
+	<div id="calendar"> Calendar ** {{ default_date }} ** </div>
+</div>
+
+ {% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+	var url_resources = `{% url 'api_mes_resources'  %}`;
+	var url_events = `{% url 'api_mes_events'  %}`;
+
+	//import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
+	// date picker
+	// $( "#datepicker" ).datepicker();
+	// date calendar
+
+  $("#calendar").fullCalendar({
+
+	//plugins: [ resourceTimelinePlugin ],
+	//	defaultView: "resourceTimeLine",
+	//defaultView: "agendaDay",
+ //defaultView: 'timelineDay',
+
+	defaultDate: '{{ default_date }}',
+	editable: true,
+	selectable: true,
+	eventLimit: true, // allow "more" link when too many events
+	header: {
+		left: "prev,next,   timelineDay",
+		center: "title",
+		right: "month"
+	},
+	lang: 'fr', // langue choisi francais
+  timezone:"Europe/Paris",
+
+	//defaultView: "resourceDay",
+	header: {
+    center: 'month,timelineFourDays'
+  },
+
+	views: {
+	    timelineFourDays: {
+	      type: 'dayline',
+	      duration: { days: 4 }
+	    },
+
+	  },
+
+		resources : url_resources,
+		events :  url_events ,
+
+    // the "ev" parameter is the mouse event rather than the resource "event"
+    // the ev.data is the resource column clicked upon
+    selectable: true,
+    selectHelper: true,
+
+		eventRender : function(event, element, view) {
+
+				// $('#calendar').fullCalendar('gotoDate', moment(aujourdhui).local() );
+				var class_name = element[0].className;
+				console.log("statut of : " + event.status);
+				element.css('background-color', event.eventColor);
+				element.css('color', "#fff");
+				element.css('font-weight', "bold");
+
+				if(event.status == 'NOUVEAU') {
+					element.css('color', "#010101");
+				}
+				if(event.status == 'CLOTUREE') {
+					//event.allDay = true;
+					event.editable = false;
+					event.droppable = false;
+
+				}
+
+				if(view.name == 'month' ){
+					//--
+					//title = element.children().find( '.fc-time' );
+					//title.html("<A style='color:12345' >INFO </A>".replace(/12345/, event.eventColor) );
+
+					//title.addClass('fc-event');
+					body = element.children().find( '.fc-title' );
+					//alert(event.eventColor);
+					}
+				},
+
+	    select: function(start, end, ev) {
+	      console.log(start);
+	      console.log(end);
+	      console.log(ev.data); // resources
+	    },
+
+	    eventClick: function(event) {
+	      console.log(event);
+	    },
+
+	    eventDrop: function (event, delta, revertFunc) {
+	      console.log(event);
+	    }
+		  });
+	});
+  </script>
+
+  {% endblock %}
+
+<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 50px auto;
+	}
+
+</style>

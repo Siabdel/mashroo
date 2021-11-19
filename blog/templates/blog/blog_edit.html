@@ -1,0 +1,110 @@
+{% extends  'base_blog.html'  %}
+{% load  staticfiles %}
+
+{% block extra_js %}
+ <!-- jQuery -->
+	<!-- Bootstrap Core JavaScript -->
+<!-- Plugin JavaScript -->
+
+ <!-- Custom Theme JavaScript -->
+ <script src="{% static 'js/agency/agency.js' %}"></script>
+
+ <!-- VUEJS  -->
+{% endblock %}
+
+
+ {% block extra_head %}
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="{% static 'css/agency/agency.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/agency/my_style.css' %}" type="text/css">
+<!-- Bootstrap Core CSS -->
+<!-- Custom CSS -->
+
+<!-- Custom Fonts -->
+<link href="{% static 'css/fonts/font-awesome/css/font-awesome.css'  rel='stylesheet' %}" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+
+<!-- Plugin CSS -->
+<link rel="stylesheet" href="{% static 'css/agency/animate.min.css' %}" type="text/css">
+
+{% endblock %}
+
+{%  block main  %}
+<div class="container-fluid">
+  <div class="well">
+    <h3> <a href="{% url 'blog_admin' %}"> Accueil  </a></h3>
+  </div>
+
+    <div class="row">
+        <div class="col-lg-12 text-center">
+          <div v-show="error" id="success" class="bg-info text-warning" > {{ form.formsets.error }}</div>
+
+            <h2 v-show="!isSaved" class="section-heading"> Saisir un article </h2>
+            <h3 class="section-subheading text-muted"> .</h3>
+        </div>
+    </div>
+
+  <div class="row" >
+      <div class="col-lg-12">
+          <form name="sentMessage"   method="POST" action="">
+
+              <div  class="row" >
+                  {% csrf_token %}
+                  <div class="col-md-12">
+                      <div class="form-group">
+                        {{form.media }}
+                        <span class="col-sm-3"><label for="">Titre :</label> {{form.title}} </span>
+                        {{ form.author }}
+                          <p class="help-block text-danger"></p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-12">
+                      <div class="form-group">
+                        <span class="col-sm-6"> <label for="">Récapulatif : :</label>{{form.recap}} </span>
+
+                          <p class="help-block text-danger"></p>
+                      </div>
+                  </div>
+
+                  <div class="col-md-12">
+                      <div class="form-group">
+
+                        <span class="col-sm-6"><label for="">Catégorie: :</label> {{form.category}} </span>
+                          <p class="help-block text-danger"></p>
+                      </div>
+                  </div>
+              </div>
+
+                  <div class="clearfix"></div>
+                  <hr>
+                  <br>
+                  <div class="row">
+
+                  <div class="col-lg-12 text-center">
+                    <div class="form-group">
+                        {{form.content }}
+                        <p class="help-block text-danger"></p>
+                    </div>
+                  </div>
+
+                  <div class="clearfix"></div>
+
+
+                  <div class="col-lg-12  col-offset-3  text-center">
+                    <span class="col-lg-2">
+                      <input class="btn btn-xl" type="submit"   value=" Enregistrerl'Article " />
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base_projects.html" %}
+{% load  staticfiles static %}
+{% load l10n %}
+
+{% block left_side %}
+  {% include 'elements/pro_left_menu.html' %}
+{% endblock   %}
+
+{% block right_side %}
+{% endblock   %}
+
+
+{% block extra_head %}
+  <link rel='stylesheet' href='{% static "css/todo_style.css" %}' />
+{% endblock  %}
+
+
+
+{% block extra_js %}
+    <!-- <script src="{% static 'vuejs/todo/vue.min.js' %}"></script> -->
+    <script src="{% static 'vuejs/vue_2.5.16.js' %}"></script>
+    <script src="{% static 'vuejs/todo/app3.js' %}"></script>
+    <script>
+    // for testing clear data storage
+    ///if (navigator.userAgent.indexOf('PhantomJS') > -1) localStorage.clear()
+    </script>
+{% endblock  %}
+
+
+
+{% block main_side %}
+  <div  id="app">
+    <componentodo :user_id=2 > </componentodo>
+  </div>
+
+
+{% endblock  %}
+
+
+{% block template_vuejs %}
+<template id="vtodo_template">
+    <!-- <style>[v-cloak] { display: none; }</style> -->
+    <section class="todoapp">
+      <header class="header">
+        <h1>Todo today </h1>
+        <input class="new-todo"
+          autofocus autocomplete="off"
+          placeholder="Qu'est ce qui doit être fait ?"
+          v-model="newTodo"
+          @keyup.enter="addTodo">
+      </header>
+      <section class="main" v-show="todos.length" v-cloak>
+        <form class="" action="" method="post">
+          {% csrf_token %}
+        <input class="toggle-all" type="checkbox" v-model="allDone">
+        <ul class="todo-list">
+          <li v-for="todo in filteredTodos"
+            class="todo"
+            :key="todo.id"
+            :class="{ completed: todo.completed, editing: todo == editedTodo }">
+            <div class="view">
+              <input class="toggle" type="checkbox" v-model="todo.completed" value="V">
+              <label @dblclick="editTodo(todo)">[[ todo.title]]</label>
+              <button class="destroy" @click.stop="removeTodo(todo)"></button>
+            </div>
+            <input class="edit" type="text"
+              v-model="todo.title"
+              v-todo-focus="todo == editedTodo"
+              @blur="doneEdit(todo)"
+              @keyup.enter.stop="doneEdit(todo)"
+              @keyup.esc="cancelEdit(todo)">
+          </li>
+        </ul>
+      </form>
+      </section>
+      <footer class="footer" v-show="todos.length" v-cloak>
+        <span class="todo-count">
+          <strong>[[remaining ]]</strong> [[remaining | pluralize ]] left
+        </span>
+        <ul class="filters">
+          <li><a href="#/all" :class="{ selected: visibility == 'all' }">All</a></li>
+          <li><a href="#/active" :class="{ selected: visibility == 'active' }">Active</a></li>
+          <li><a href="#/completed" :class="{ selected: visibility == 'completed' }">Completed</a></li>
+        </ul>
+        <button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
+          Supprimer les lignes faite
+        </button>
+      </footer>
+    </section>
+</template>
+
+<!-- Delete ".min" for console warnings in development -->
+{% endblock  %}
